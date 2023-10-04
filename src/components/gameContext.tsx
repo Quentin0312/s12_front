@@ -1,6 +1,6 @@
 import { JSXElement, Show, createEffect, createSignal } from "solid-js";
 import Overlay from "./overlay";
-import { drawMessage, winMessage } from "../languageDict";
+import { drawMessage, opponentLeftMessage, redWinMessage, waitingPLayer, yellowWinMessage } from "../languageDict";
 import { gameLanguage } from "../App";
 
 // TODO: Rename
@@ -14,11 +14,12 @@ export enum GameStepEnum {
     draw,
     win,
     opponentLeft,
+    waiting,
 }
 
 export const [turn, setTurn] = createSignal(PieceEnum.red)
 export const [gameStep, setGameStep] = createSignal(GameStepEnum.playing)
-const [messageToDisplay, setMessageToDisplay] = createSignal<string>()
+export const [messageToDisplay, setMessageToDisplay] = createSignal<string>()
 
 export function switchTurn() {
     setTurn((prev) =>
@@ -34,11 +35,16 @@ export default function (props: {children: JSXElement}) {
                 setMessageToDisplay(drawMessage[gameLanguage])
                 break;
             case GameStepEnum.win:
-                setMessageToDisplay(turn() + " " + winMessage[gameLanguage])
+                setMessageToDisplay(turn() == PieceEnum.red ?  redWinMessage[gameLanguage] : yellowWinMessage[gameLanguage])
                 break;
             case GameStepEnum.playing:
                 setMessageToDisplay()
                 break;
+            case GameStepEnum.opponentLeft:
+                setMessageToDisplay(opponentLeftMessage[gameLanguage])
+                break;
+            case GameStepEnum.waiting:
+                setMessageToDisplay(waitingPLayer[gameLanguage])
             default:
                 console.log("gameStep() case error")
         }

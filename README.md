@@ -1,3 +1,6 @@
+# TODO
+Préciser les commandes de déploiement de heroku et le lien des remotes
+
 ## Usage
 
 Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.

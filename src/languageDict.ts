@@ -14,6 +14,9 @@ export const gameModeIA: LanguageDictType = {french : "Partie contre IA", englis
 
 export const backToModeSelection: LanguageDictType = {french : "Séléction du mode de jeu", english: "Back to game mode selection", chinnois: "返回游戏模式选择"}
 
-export const drawMessage: LanguageDictType = {french : "Match null :/", english: "Draw !", chinnois: "平等"}
-export const winMessage: LanguageDictType = {french : "est le meilleur", english: "won", chinnois: "韩元"}
+export const waitingPLayer: LanguageDictType = {french : "En attente d'un adversaire", english: "Waiting for an opponent", chinnois: "等待对手"}
 export const opponentLeftMessage: LanguageDictType = {french : "L'adversaire a pris la fuite", english: "The opponent left", chinnois: "对手离开"}
+
+export const drawMessage: LanguageDictType = {french : "Match null :/", english: "Draw !", chinnois: "平等"}
+export const redWinMessage: LanguageDictType = {french : "Le joueur rouge remporte la partie !", english: "Red won", chinnois: "韩元"}
+export const yellowWinMessage: LanguageDictType = {french : "Le joueur jaune remporte la partie !", english: "Yellow won", chinnois: "韩元"}

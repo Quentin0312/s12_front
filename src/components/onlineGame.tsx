@@ -23,16 +23,17 @@ export default function () {
       console.log(req)
       setPlayerPieceColor(req == "red" ? PieceEnum.red : PieceEnum.yellow)
       if (req == "yellow") {
-        console.log("waiting for an opponent")
-        socket.on('opponent ready', (req) => console.log("opponent is ready")
-        )
+        setGameStep(GameStepEnum.waiting)
+        socket.on('opponent ready', (req) => {
+            setGameStep(GameStepEnum.playing)
+        })
+
       } else {
         console.log("red so opponent is already ready")
       }}
     )
 
     socket.on("disconnection order", () => {
-        console.log("opponent left")
         setGameStep(GameStepEnum.opponentLeft)
         socket.disconnect()
     })
@@ -40,7 +41,6 @@ export default function () {
     createEffect(() => {
         const move = playerMove()
         if (!move) return;
-        console.log("ouais c'est laa")
         socket.emit("move", move)
     })
     
