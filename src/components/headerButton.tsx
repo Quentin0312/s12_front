@@ -1,6 +1,6 @@
 import { Show } from "solid-js";
 import { actualPage, PageEnum, gameLanguage, setActualPage } from "../App";
-import { backToModeSelection } from "./languageDict";
+import { backToModeSelection } from "../languageDict";
 import { GameStepEnum, PieceEnum, setGameStep, setTurn } from "./gameContext";
 import { getInitialBoard, setBoardState, setWinningPieces } from "./board";
 

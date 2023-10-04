@@ -13,3 +13,7 @@ export const gameModeOnline: LanguageDictType = {french : "Partie en ligne", eng
 export const gameModeIA: LanguageDictType = {french : "Partie contre IA", english: "IA", chinnois: "人工智能"}
 
 export const backToModeSelection: LanguageDictType = {french : "Séléction du mode de jeu", english: "Back to game mode selection", chinnois: "返回游戏模式选择"}
+
+export const drawMessage: LanguageDictType = {french : "Match null :/", english: "Draw !", chinnois: "平等"}
+export const winMessage: LanguageDictType = {french : "est le meilleur", english: "won", chinnois: "韩元"}
+export const opponentLeftMessage: LanguageDictType = {french : "L'adversaire a pris la fuite", english: "The opponent left", chinnois: "对手离开"}

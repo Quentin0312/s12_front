@@ -1,5 +1,5 @@
 import { PageEnum, gameLanguage, setActualPage } from "../App";
-import { gameModeIA, gameModeLocal, gameModeOnline } from "./languageDict";
+import { gameModeIA, gameModeLocal, gameModeOnline } from "../languageDict";
 import MenuButton from "./menuButton";
 
 // TODO: Créer un composant MenuButton

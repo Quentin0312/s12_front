@@ -1,11 +1,10 @@
 import { createSignal, Switch, type JSXElement, Match } from 'solid-js';
 
 import Header from './components/header';
-import Board from './components/board';
-import GameContext from './components/gameContext';
-import { LanguageEnum } from './components/languageDict';
+import { LanguageEnum } from './languageDict';
 import Menu from './components/menu';
-import Online from './components/online';
+import OnlineGame from './components/onlineGame';
+import LocalGame from './components/localGame';
 
 // TODO: Par default utiliser la langue du browser
 // TODO: The user should be able to change langage
@@ -22,7 +21,7 @@ export enum PageEnum {
 // TODO: Rename
 export const [actualPage, setActualPage] = createSignal(PageEnum.menu)
 
-// TODO: Rename "Board" component to "LocalBoard"
+// TODO: Rewrite (refactor LocalGame and OnlineGame)
 export default function (): JSXElement {
   return (
     <>
@@ -31,13 +30,13 @@ export default function (): JSXElement {
         <Match when={actualPage() == PageEnum.menu}>
           <Menu />
         </Match>
+
         <Match when={actualPage() == PageEnum.local}>
-          <GameContext>
-            <Board />
-          </GameContext>
+          <LocalGame />
         </Match>
+
         <Match when={actualPage() == PageEnum.online}>
-          <Online />
+          <OnlineGame />
         </Match>
       </Switch>
     </>

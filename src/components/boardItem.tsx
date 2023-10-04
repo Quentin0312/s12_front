@@ -7,7 +7,7 @@ import { PageEnum, actualPage } from "../App"
 import { checkNull, checkWinGlobal } from "../winDetection.utils"
 
 import "./boardItem.css"
-import { playerPieceColor } from "./online"
+import { playerPieceColor } from "./onlineGame"
 
 type BoardItemProps = {
     row: number,
