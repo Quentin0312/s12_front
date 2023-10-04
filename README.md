@@ -1,5 +1,14 @@
-# TODO
-Préciser les commandes de déploiement de heroku et le lien des remotes
+# TODO Ajouter des détails concernant heroku
+
+Remotes:
+- Github => https://github.com/Quentin0312/s12_front.git
+- Heroku => https://git.heroku.com/s12-front.git
+
+Déployer:
+`git push heroku main`
+
+Avoir accès au logs de l'app déployé:
+`heroku logs --tail`
 
 ## Usage
 
