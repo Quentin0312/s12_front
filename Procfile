@@ -1,1 +1,1 @@
-web: npm run serve
+web: npm install -g serve && serve -s ./dist
