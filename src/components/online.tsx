@@ -16,7 +16,7 @@ type WinningRequestType = {
 
 export default function () {
     // TODO: Put url in .env
-    const socket = io("https://s12-back-bf7d3c384d86.herokuapp.com/")
+    const socket = io(import.meta.env.DEV ? "http://localhost:8000" : "https://s12-back-bf7d3c384d86.herokuapp.com/")
 
     // player color
     socket.on("player color", (req) => {
