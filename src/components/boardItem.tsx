@@ -5,9 +5,9 @@ import { boardState, setWinningPieces, updateBoard, winningPieces } from "./boar
 import { PageEnum, actualPage } from "../App"
 
 import { checkNull, checkWinGlobal } from "../winDetection.utils"
+import { playerPieceColor } from "./onlineGame"
 
 import "./boardItem.css"
-import { playerPieceColor } from "./onlineGame"
 
 type BoardItemProps = {
     row: number,
