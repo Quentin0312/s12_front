@@ -4,6 +4,7 @@ import GameContext, { GameStepEnum, PieceEnum, setGameStep, switchTurn } from '.
 import { createEffect, createSignal, onCleanup } from 'solid-js';
 import Board, { WinningPiecesType, boardStateDictType, getInitialBoard, setBoardState, setWinningPieces } from './board';
 import { playerMove, setPlayerMove } from './boardItem';
+import PlayerTurn from './playerTurn';
 
 export const [playerPieceColor, setPlayerPieceColor] = createSignal<PieceEnum>()
 
@@ -19,7 +20,7 @@ export default function () {
     const socket = io(import.meta.env.DEV ? "http://localhost:8000" : "https://s12-back-bf7d3c384d86.herokuapp.com/")
 
     // player color
-    socket.on("player color", (req) => {
+    socket.on("player color", (req: PieceEnum.red | PieceEnum.yellow) => {
       console.log(req)
       setPlayerPieceColor(req == "red" ? PieceEnum.red : PieceEnum.yellow)
       if (req == "yellow") {
@@ -66,6 +67,7 @@ export default function () {
     })
     return (
         <GameContext>
+            <PlayerTurn />
             <Board />
         </GameContext>
     );

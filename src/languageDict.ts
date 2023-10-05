@@ -20,3 +20,9 @@ export const opponentLeftMessage: LanguageDictType = {french : "L'adversaire a p
 export const drawMessage: LanguageDictType = {french : "Match null :/", english: "Draw !", chinnois: "平等"}
 export const redWinMessage: LanguageDictType = {french : "Le joueur rouge remporte la partie !", english: "Red won", chinnois: "韩元"}
 export const yellowWinMessage: LanguageDictType = {french : "Le joueur jaune remporte la partie !", english: "Yellow won", chinnois: "韩元"}
+
+export const yourTurnMessageLanguageDictType: LanguageDictType = {french : "C'est à votre tour de jouer !", english: "It's your turn", chinnois: "轮到你了"}
+export const opponentTurnMessageLanguageDictType: LanguageDictType = {french : "C'est au tour de votre adversaire !", english: "It's your opponent turn", chinnois: "轮到你的对手了"}
+
+export const playerYellowTurn: LanguageDictType = {french : "C'est au tour du joueur jaune !", english: "It's yellow player turn", chinnois: "轮到黄色玩家了"}
+export const playerRedTurn: LanguageDictType = {french : "C'est au tour du joueur rouge !", english: "It's yellow player turn", chinnois: "轮到黄色玩家了"}

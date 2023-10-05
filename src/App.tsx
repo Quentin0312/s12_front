@@ -18,8 +18,6 @@ export enum PageEnum {
   ia
 }
 
-// ! USELESS COMMENT
-
 // TODO: Rename
 export const [actualPage, setActualPage] = createSignal(PageEnum.menu)
 
