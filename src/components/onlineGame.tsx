@@ -16,20 +16,24 @@ type WinningRequestType = {
 }
 
 export default function () {
+    setGameStep(GameStepEnum.waiting)
     // TODO: Put url in .env
     const socket = io(import.meta.env.DEV ? "http://localhost:8000" : "https://s12-back-bf7d3c384d86.herokuapp.com/")
-
+    // TODO: if socket.active est false donc GamestepEnum.bug à mettre en place
+    // et ses conséquences et actions
+    
     // player color
     socket.on("player color", (req: PieceEnum.red | PieceEnum.yellow) => {
       console.log(req)
       setPlayerPieceColor(req == "red" ? PieceEnum.red : PieceEnum.yellow)
       if (req == "yellow") {
-        setGameStep(GameStepEnum.waiting)
+        // setGameStep(GameStepEnum.waiting)
         socket.on('opponent ready', (req) => {
             setGameStep(GameStepEnum.playing)
         })
 
       } else {
+        setGameStep(GameStepEnum.playing)
         console.log("red so opponent is already ready")
       }}
     )
