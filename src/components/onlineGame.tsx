@@ -4,6 +4,7 @@ import GameContext, { GameStepEnum, PieceEnum, setGameStep, switchTurn } from '.
 import { createEffect, createSignal, onCleanup } from 'solid-js';
 import Board, { WinningPiecesType, boardStateDictType, getInitialBoard, setBoardState, setWinningPieces } from './board';
 import { playerMove, setPlayerMove } from './boardItem';
+import PlayerTurn from './playerTurn';
 
 export const [playerPieceColor, setPlayerPieceColor] = createSignal<PieceEnum>()
 
@@ -66,6 +67,7 @@ export default function () {
     })
     return (
         <GameContext>
+            <PlayerTurn />
             <Board />
         </GameContext>
     );
