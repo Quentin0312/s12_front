@@ -5,6 +5,7 @@ import { LanguageEnum } from './languageDict';
 import Menu from './components/menu';
 import OnlineGame from './components/onlineGame';
 import LocalGame from './components/localGame';
+import Chat from './components/Chat';
 
 // TODO: Par default utiliser la langue du browser
 // TODO: The user should be able to change langage
@@ -37,6 +38,7 @@ export default function (): JSXElement {
 
         <Match when={actualPage() == PageEnum.online}>
           <OnlineGame />
+          <Chat />
           {/* TODO: Put chat here */}
         </Match>
       </Switch>
