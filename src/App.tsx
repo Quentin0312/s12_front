@@ -1,3 +1,7 @@
+// ! IA
+// TODO: Transformer dictState to matrice pour le back IA
+// TODO: Pour tester, mettre en place le bot en parallèle au mode local et qui print dans le console.log()
+
 import { createSignal, Switch, type JSXElement, Match } from 'solid-js';
 
 import Header from './components/header';

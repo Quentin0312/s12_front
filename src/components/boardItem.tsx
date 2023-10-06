@@ -8,6 +8,8 @@ import { checkNull, checkWinGlobal } from "../winDetection.utils"
 import { playerPieceColor } from "./onlineGame"
 
 import "./boardItem.css"
+import { formatBoardForIA } from "../ia/ia.utils"
+import { bot } from "./localGame"
 
 type BoardItemProps = {
     row: number,
@@ -28,7 +30,12 @@ function onclickLocal(row:number, column: number) {
     if (row == 5 || boardState()[row + 1][column] != PieceEnum.empty) {
         // Update board
         updateBoard(row, column)
-
+        
+        // ! get IA move
+        const iaFormatedBoard = formatBoardForIA(boardState())
+        console.log("iaFormatedBoard", iaFormatedBoard)
+        const output = bot.activate(iaFormatedBoard)   
+        console.log("model output", output)     
         // Check win situations
         const totalWinningPieces = checkWinGlobal()
         if (totalWinningPieces.length > 0) {

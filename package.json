@@ -10,6 +10,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/synaptic": "^1.0.5",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
     "solid-devtools": "^0.27.3",
@@ -21,6 +22,7 @@
   "dependencies": {
     "serve": "^14.2.1",
     "socket.io-client": "^4.7.2",
-    "solid-js": "^1.7.6"
+    "solid-js": "^1.7.6",
+    "synaptic": "^1.1.4"
   }
 }
