@@ -14,10 +14,11 @@ type WinningRequestType = {
     winningPieces?: WinningPiecesType
 }
 
+export const socket = io(import.meta.env.DEV ? "http://localhost:8000" : "https://s12-back-bf7d3c384d86.herokuapp.com/")
+
 export default function () {
     // TODO: Put url in .env
-    const socket = io(import.meta.env.DEV ? "http://localhost:8000" : "https://s12-back-bf7d3c384d86.herokuapp.com/")
-
+    
     // player color
     socket.on("player color", (req) => {
       console.log(req)
@@ -37,7 +38,7 @@ export default function () {
         setGameStep(GameStepEnum.opponentLeft)
         socket.disconnect()
     })
-    
+  
     createEffect(() => {
         const move = playerMove()
         if (!move) return;

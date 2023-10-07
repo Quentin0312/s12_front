@@ -1,5 +1,7 @@
 import { For, JSX, JSXElement, Show, createSignal, onCleanup } from "solid-js";
 import ChatMessage, { ChatMessageProps, WhoChatEnum } from "./ChatMessage";
+import { io, Socket } from "socket.io-client";
+import {socket} from './onlineGame';
 
 export const [messages, setMessages] = createSignal<ChatMessageProps[]>([])
 
@@ -12,7 +14,15 @@ function Chat(){
   const toggleDiv = () => {
     setIsDivVisible(!isDivVisible()); // Utilisez isDivVisible() pour lire la valeur sans l'appeler comme une fonction
   };
-  
+
+  const appendMessage = (m: string) => {
+    setMessages((prev) => {
+      const copy = [...prev]
+      copy.push({message: m, temps:"", who:WhoChatEnum.self})
+      return copy
+    })
+  } 
+
   // Lorsque la touche entrée est appuyé, ajoute le message dans le chat.
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -20,20 +30,28 @@ function Chat(){
       const input = e.currentTarget;
       if(input instanceof HTMLInputElement && chatDiv != null){
         // Mettre à jour la liste des messages 
-        setMessages((prev) => {
-          const test = [...prev]
-          test.push({message: input.value, temps:"", who:WhoChatEnum.self})
-          return test
-        })
+        appendMessage(input.value)
+        // Send to server 
+        sendMessage(input.value)
         // Effacer l'input ou effectuer d'autres actions si nécessaire
         input.value = ""
         // Faire défiler automatiquement vers le bas pour voir le nouveau message
         chatDiv.scrollTop = chatDiv.scrollHeight;
-        // Send to server 
-
       }
     }
   }
+
+  const sendMessage = (m: string) => {
+    socket.emit("message", m)
+  }
+
+  socket.on("message", (response) => {
+    console.log("===========================")
+    console.log(response)
+    console.log("===========================")
+    
+    //appendMessage(m)
+  })
 
   // Afficher le message du locuteur
   onCleanup(()=> {
