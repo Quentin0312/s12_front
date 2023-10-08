@@ -1,8 +1,39 @@
-import { For, JSX, JSXElement, Show, createSignal, onCleanup } from "solid-js";
-import ChatMessage, { ChatMessageProps, WhoChatEnum } from "./ChatMessage";
-import { io, Socket } from "socket.io-client";
+// TODO: Rewrite the whole file !!!!!!!
+
+// TODO: Notifier l'utilisateur quand message reçu (ex: pastille rouge)
+// TODO: Mettre le chat au dessus de l'overlay pour permettre la discussion post game
+import { For, Show, createSignal, onCleanup } from "solid-js";
+import ChatMessage, { ChatMessageProps } from "./ChatMessage";
+import { Socket } from "socket.io-client";
 import { PieceEnum } from "./gameContext";
 import { playerPieceColor } from "./onlineGame";
+
+// TODO: Move
+// TODO: Find way to link this to ChatMessageProps type !
+export class Message{
+  who: PieceEnum;
+  message: string;
+  id: string;
+  temps: string
+  private tempsBrut: Date
+
+  constructor(contenu: string){
+      this.tempsBrut = new Date()
+      this.id = this.generateID(this.tempsBrut)
+      this.message = contenu
+      this.temps = this.getDate(this.tempsBrut)
+      this.who = playerPieceColor() as PieceEnum
+  }
+
+  private generateID(tempsBrut: Date): string {
+      return(tempsBrut.getTime().toString())
+  }    
+  
+  private getDate(tempsBrut: Date): string {
+      const temps = tempsBrut.getHours() + ":" + tempsBrut.getMinutes();
+      return(temps)
+  }
+}
 
 export const [messages, setMessages] = createSignal<ChatMessageProps[]>([])
 
@@ -21,52 +52,34 @@ function Chat(props: ChatProps){
     setIsDivVisible(!isDivVisible()); // Utilisez isDivVisible() pour lire la valeur sans l'appeler comme une fonction
   };
 
-  const appendMessage = (m: string) => {
-    setMessages((prev) => {
-      const copy = [...prev]
-      copy.push({message: m, temps:"", who:WhoChatEnum.self})
-      return copy
-    })
-  } 
-
+  // TODO: Rewrite
   // Lorsque la touche entrée est appuyé, ajoute le message dans le chat.
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
       const chatDiv = document.getElementById('chat'); 
       const input = e.currentTarget;
       if(input instanceof HTMLInputElement && chatDiv != null){
-        // Mettre à jour la liste des messages 
-        appendMessage(input.value)
+        // Mettre à jour la liste des messages
+        // TODO: Mettre en place affichage temporaire pour 'cacher' lag reponse serveur
+
         // Send to server 
         sendMessage(input.value)
-        // Effacer l'input ou effectuer d'autres actions si nécessaire
+        // Effacer l'input ou effectuer d'autres actions si nécessaire // ! ???
         input.value = ""
         // Faire défiler automatiquement vers le bas pour voir le nouveau message
-        chatDiv.scrollTop = chatDiv.scrollHeight;
+        chatDiv.scrollTop = chatDiv.scrollHeight; // TODO: Fix
       }
     }
   }
 
   const sendMessage = (m: string) => {
-    socket.emit("message", m)
+    socket.emit("message", new Message(m))
   }
 
-  socket.on("message", (response: {sendingPlayer: PieceEnum, contenu: string}) => {
-    console.log("===========================")
-    console.log("response =>", response)
-    console.log("===========================")
+  socket.on("messages to update", (response: ChatMessageProps[]) => {
     
-    setMessages((prev : ChatMessageProps[]) => {
-      const newMessages = [...prev]
-      newMessages.push({
-        who: response.sendingPlayer == playerPieceColor() ? WhoChatEnum.self : WhoChatEnum.opponent,
-        message: response.contenu,
-        temps: "TODO: Use Message class !"
-      })
-      return newMessages
-    })
+    setMessages(response)
   })
-
   // Afficher le message du locuteur
   onCleanup(()=> {
     setMessages([])

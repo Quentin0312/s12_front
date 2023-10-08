@@ -1,4 +1,6 @@
 import { JSXElement } from "solid-js"
+import { PieceEnum } from "./gameContext"
+import { playerPieceColor } from "./onlineGame"
 
 export enum WhoChatEnum {
     opponent,
@@ -6,7 +8,7 @@ export enum WhoChatEnum {
 }
 
 export type ChatMessageProps = {
-    who: WhoChatEnum,
+    who: PieceEnum,
     message: string,
     temps: string,
     image ?: any
@@ -41,7 +43,8 @@ export default function (props: ChatMessageProps) {
     )
   }
 
-  return props.who == WhoChatEnum.self
+  // TODO: Utiliser comme des composant <Composant />
+  return props.who == playerPieceColor() as PieceEnum
     ? locuteur(props.message, props.temps)
     : interlocuteur(props.message, props.temps)
 }
