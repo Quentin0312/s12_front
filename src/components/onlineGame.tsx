@@ -1,9 +1,11 @@
 // TODO: refactor with / use board.tsx
-import { io } from 'socket.io-client';
-import GameContext, { GameStepEnum, PieceEnum, setGameStep, switchTurn } from './gameContext';
 import { createEffect, createSignal, onCleanup } from 'solid-js';
+import { io } from 'socket.io-client';
+
+import GameContext, { GameStepEnum, PieceEnum, setGameStep, switchTurn } from './gameContext';
 import Board, { WinningPiecesType, boardStateDictType, getInitialBoard, setBoardState, setWinningPieces } from './board';
 import { playerMove, setPlayerMove } from './boardItem';
+import Chat from './Chat';
 
 export const [playerPieceColor, setPlayerPieceColor] = createSignal<PieceEnum>()
 
@@ -14,10 +16,10 @@ type WinningRequestType = {
     winningPieces?: WinningPiecesType
 }
 
-export const socket = io(import.meta.env.DEV ? "http://localhost:8000" : "https://s12-back-bf7d3c384d86.herokuapp.com/")
 
 export default function () {
     // TODO: Put url in .env
+    const socket = io(import.meta.env.DEV ? "http://localhost:8000" : "https://s12-back-bf7d3c384d86.herokuapp.com/")
     
     // player color
     socket.on("player color", (req) => {
@@ -68,6 +70,7 @@ export default function () {
     return (
         <GameContext>
             <Board />
+            <Chat socket={socket}/>
         </GameContext>
     );
 }

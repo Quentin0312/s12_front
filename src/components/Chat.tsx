@@ -1,11 +1,17 @@
 import { For, JSX, JSXElement, Show, createSignal, onCleanup } from "solid-js";
 import ChatMessage, { ChatMessageProps, WhoChatEnum } from "./ChatMessage";
 import { io, Socket } from "socket.io-client";
-import {socket} from './onlineGame';
+import { PieceEnum } from "./gameContext";
+import { playerPieceColor } from "./onlineGame";
 
 export const [messages, setMessages] = createSignal<ChatMessageProps[]>([])
 
-function Chat(){
+type ChatProps = {
+  socket: Socket
+}
+
+function Chat(props: ChatProps){
+  const socket = props.socket
   // setMessages([{message: "moi", temps: "mtnt", who: WhoChatEnum.self},
   // {message: "pas moi", temps: "mtnt", who: WhoChatEnum.opponent}])
   const [isDivVisible, setIsDivVisible] = createSignal<Boolean>(false);
@@ -45,12 +51,20 @@ function Chat(){
     socket.emit("message", m)
   }
 
-  socket.on("message", (response) => {
+  socket.on("message", (response: {sendingPlayer: PieceEnum, contenu: string}) => {
     console.log("===========================")
-    console.log(response)
+    console.log("response =>", response)
     console.log("===========================")
     
-    //appendMessage(m)
+    setMessages((prev : ChatMessageProps[]) => {
+      const newMessages = [...prev]
+      newMessages.push({
+        who: response.sendingPlayer == playerPieceColor() ? WhoChatEnum.self : WhoChatEnum.opponent,
+        message: response.contenu,
+        temps: "TODO: Use Message class !"
+      })
+      return newMessages
+    })
   })
 
   // Afficher le message du locuteur
@@ -87,4 +101,5 @@ function Chat(){
   );
 }
 
+// TODO: export default function instead !
 export default Chat;

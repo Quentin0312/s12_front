@@ -1,7 +1,5 @@
 import { gameLanguage } from "../App"
 import {gameTitle } from "../languageDict"
-import { setMessages } from "./Chat"
-import { WhoChatEnum } from "./ChatMessage"
 import HeaderButton from "./headerButton"
 // TODO: Utiliser le theme tailwind pour les couleurs
 // TODO: Ajouter possibilté de revenir au choix du mode de jeu
@@ -9,7 +7,6 @@ import HeaderButton from "./headerButton"
 export default function () {
     // TODO: Améliorer l'affichage du "turn" => utiliser la piece qui s'affiche en haut du board
     // const color = () => turn() == PieceEnum.red ? "#ff0000" : "#ffff00"
-
     return(
         <div class="relative w-full h-36 bg-yellow-400 z-header">
             <HeaderButton />

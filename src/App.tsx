@@ -38,8 +38,6 @@ export default function (): JSXElement {
 
         <Match when={actualPage() == PageEnum.online}>
           <OnlineGame />
-          <Chat />
-          {/* TODO: Put chat here */}
         </Match>
       </Switch>
     </>
