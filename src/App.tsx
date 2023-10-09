@@ -9,6 +9,7 @@ import { LanguageEnum } from './languageDict';
 import Menu from './components/menu';
 import OnlineGame from './components/onlineGame';
 import LocalGame from './components/localGame';
+import IaGame from './components/iaGame';
 
 // TODO: Par default utiliser la langue du browser
 // TODO: The user should be able to change langage
@@ -43,6 +44,11 @@ export default function (): JSXElement {
           <OnlineGame />
           {/* TODO: Put chat here */}
         </Match>
+
+        <Match when={actualPage() == PageEnum.ia}>
+          <IaGame />
+        </Match>
+        
       </Switch>
     </>
   )
