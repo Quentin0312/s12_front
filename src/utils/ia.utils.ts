@@ -21,6 +21,8 @@ function formatBoardForIA(board: boardStateDictType) {
 function getIaMoves(): PiecePosType[] {
     const iaFormatedBoard = formatBoardForIA(boardState())
     const modelRawResult = bot.activate(iaFormatedBoard)
+    console.log("modelRawResult", modelRawResult);
+    
 
     let iaMoves: PiecePosType[] = []
 
