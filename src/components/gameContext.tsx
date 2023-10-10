@@ -29,11 +29,13 @@ export function switchTurn() {
 
 export default function (props: {children: JSXElement}) {
     // TODO: Mettre en place action quand win / null / nouvelle partie ici
+    // ! Add case ia won => "You lose !"
     createEffect(()=> {
         switch (gameStep()) {
             case GameStepEnum.draw:
                 setMessageToDisplay(drawMessage[gameLanguage])
                 break;
+            // TODO: Fix this case
             case GameStepEnum.win:
                 setMessageToDisplay(turn() == PieceEnum.red ?  redWinMessage[gameLanguage] : yellowWinMessage[gameLanguage])
                 break;

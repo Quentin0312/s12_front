@@ -19,7 +19,7 @@ export default function () {
 
     return (
         <Show when={actualPage() == PageEnum.local || actualPage() == PageEnum.online && gameStep() == GameStepEnum.playing}>
-            <div id='player turn' class={`text-center text-${turn() == PieceEnum.red ? "white" : "black"} white w-full h-5 turn-${color()}`}>
+            <div id='player turn' class={`select-none text-center text-${turn() == PieceEnum.red ? "white" : "black"} white w-full h-5 turn-${color()}`}>
                 {messageToDisplay()}
             </div>
         </Show>

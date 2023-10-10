@@ -6,6 +6,7 @@ import Board, { WinningPiecesType, boardStateDictType, getInitialBoard, setBoard
 import { playerMove, setPlayerMove } from './boardItem';
 import PlayerTurn from './playerTurn';
 
+// TODO: Move cause also use in iaGame
 export const [playerPieceColor, setPlayerPieceColor] = createSignal<PieceEnum>()
 
 // TODO: Don't use GameStepEnum but a specific one ?
@@ -68,6 +69,7 @@ export default function () {
         socket.disconnect()
         setBoardState(getInitialBoard())
         setPlayerMove()
+        setPlayerPieceColor()
     })
     return (
         <GameContext>
