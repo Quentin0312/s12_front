@@ -3,11 +3,15 @@ import BoardItem from "./boardItem"
 import { PieceEnum, turn } from "./gameContext"
 
 export type boardStateDictType = { [key: number]: PieceEnum[] }
-// TODO: Use PieceType[] instead !?
-export type WinningPiecesType = { row: number, column: number}[]
+// TODO: Use PieceType[] instead and delete WinningPiecesType
+export type WinningPiecesType = PiecePosType[]
+// TODO: Use it always if posssible => ex: isMoveLegal parameter !
+export type PiecePosType = { row: number, column: number}
 
 export const rows = [0, 1, 2, 3, 4, 5]
 export const columns = [0, 1, 2, 3, 4, 5, 6]
+
+// TODO: Mettre en place une classe Board, ex: Board.reset(), Board.redMoves({row: 2, column: 0}), Board.get(), Board.getSituation(), Board.formatForIa()
 
 export function getInitialBoard() {
     const initialBoardStateDict: boardStateDictType = {}

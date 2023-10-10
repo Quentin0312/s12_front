@@ -1,5 +1,5 @@
-import { WinningPiecesType, boardState, boardStateDictType, columns, rows } from "./components/board";
-import { GameStepEnum, PieceEnum, gameStep, setGameStep, turn } from "./components/gameContext";
+import { WinningPiecesType, boardState, boardStateDictType, columns, rows } from "../components/board";
+import { PieceEnum, turn } from "../components/gameContext";
 
 // TODO: Delete useless: checkLeft, checkDown, checkUpRight, checkDownRight ??
 
@@ -121,14 +121,4 @@ export function checkWinGlobal() {
         }
     }
     return totalWinningPieces
-}
-
-export function checkNull() {
-    if (gameStep() == GameStepEnum.playing) {
-        const emptyPos = boardState()[0].filter((piece) => piece == PieceEnum.empty)
-        if (emptyPos.length == 0) {
-            console.log("tie")
-            return true
-        } else return false;
-    }
 }
