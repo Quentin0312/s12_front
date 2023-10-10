@@ -2,7 +2,6 @@ import { PageEnum, gameLanguage, setActualPage } from "../App";
 import { gameModeIA, gameModeLocal, gameModeOnline } from "../languageDict";
 import MenuButton from "./menuButton";
 
-// TODO: Créer un composant MenuButton
 // TODO: Mettre en place un mouseOver shadow sur les boutons
 function onClick(page: PageEnum) {
     setActualPage(page)

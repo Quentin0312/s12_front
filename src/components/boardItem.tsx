@@ -127,10 +127,6 @@ export default function (props: BoardItemProps) {
     })
 
     return (
-        // <svg height="100" width="100" onClick={() => actualPage() == PageEnum.local
-        //     ? onclickLocal(props.row, props.column)
-        //     : onClickOnline(props.row, props.column)}
-        // >
         <svg height="100" width="100" onClick={() => actualPage() == PageEnum.local
             ? onclickLocal(props.row, props.column)
             : actualPage() == PageEnum.online

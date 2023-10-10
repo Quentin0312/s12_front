@@ -35,6 +35,7 @@ export default function (props: {children: JSXElement}) {
             case GameStepEnum.draw:
                 setMessageToDisplay(drawMessage[gameLanguage])
                 break;
+            // TODO: Fix this case
             case GameStepEnum.win:
                 setMessageToDisplay(turn() == PieceEnum.red ?  redWinMessage[gameLanguage] : yellowWinMessage[gameLanguage])
                 break;
