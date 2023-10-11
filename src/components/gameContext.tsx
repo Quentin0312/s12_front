@@ -55,6 +55,7 @@ export default function (props: { children: JSXElement }) {
         break;
       case GameStepEnum.waiting:
         setMessageToDisplay(waitingPLayer[gameLanguage]);
+        break;
       default:
         console.log("gameStep() case error");
     }

@@ -45,7 +45,7 @@ export default function () {
     setPlayerPieceColor(req == "red" ? PieceEnum.red : PieceEnum.yellow);
     if (req == "yellow") {
       // setGameStep(GameStepEnum.waiting)
-      socket.on("opponent ready", (req) => {
+      socket.on("opponent ready", () => {
         setGameStep(GameStepEnum.playing);
       });
     } else {
