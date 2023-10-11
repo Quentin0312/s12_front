@@ -16,17 +16,8 @@ export const columns = [0, 1, 2, 3, 4, 5, 6];
 export function getInitialBoard() {
   const initialBoardStateDict: boardStateDictType = {};
 
-  // TODO: Rewrite
   for (const row of rows) {
-    initialBoardStateDict[row] = [
-      PieceEnum.empty,
-      PieceEnum.empty,
-      PieceEnum.empty,
-      PieceEnum.empty,
-      PieceEnum.empty,
-      PieceEnum.empty,
-      PieceEnum.empty,
-    ];
+    initialBoardStateDict[row] = Array(7).fill(PieceEnum.empty);
   }
   return initialBoardStateDict;
 }

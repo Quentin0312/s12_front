@@ -8,7 +8,7 @@ import {
 } from "../components/gameContext";
 import { checkWinGlobal } from "./winDetection.utils";
 
-// TODO: Rewrite with formator
+// TODO: Rewrite
 export function checkNull() {
   if (gameStep() == GameStepEnum.playing) {
     const emptyPos = boardState()[0].filter(

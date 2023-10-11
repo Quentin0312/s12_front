@@ -32,7 +32,7 @@ export function switchTurn() {
 }
 
 export default function (props: { children: JSXElement }) {
-  // TODO: Mettre en place action quand win / null / nouvelle partie ici
+  // TODO: Mettre en place action quand win / null / nouvelle partie ici, signal set par getSituation()
   // ! Add case ia won => "You lose !"
   createEffect(() => {
     switch (gameStep()) {

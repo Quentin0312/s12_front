@@ -1,7 +1,3 @@
-// ! IA
-// TODO: Transformer dictState to matrice pour le back IA
-// TODO: Pour tester, mettre en place le bot en parallèle au mode local et qui print dans le console.log()
-
 import { createSignal, Switch, type JSXElement, Match } from "solid-js";
 
 import Header from "./components/header";
@@ -13,6 +9,7 @@ import IaGame from "./components/iaGame";
 
 // TODO: Par default utiliser la langue du browser
 // TODO: The user should be able to change langage
+// TODO: Delete chinese troll language ?
 export const gameLanguage = LanguageEnum.fr;
 
 // TODO: Rename
@@ -26,7 +23,7 @@ export enum PageEnum {
 // TODO: Rename
 export const [actualPage, setActualPage] = createSignal(PageEnum.menu);
 
-// TODO: Rewrite (refactor LocalGame and OnlineGame)
+// TODO: Rewrite
 export default function (): JSXElement {
   return (
     <>

@@ -43,7 +43,7 @@ function onclickLocal(row: number, column: number) {
   // Update board
   updateBoard(row, column);
 
-  // TODO: Refactor checkWinGlobal with checkNull => checkSituation
+  // TODO: Use getSituation here
   // Check win situations
   const totalWinningPieces = checkWinGlobal();
   if (totalWinningPieces.length > 0) {
