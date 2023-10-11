@@ -3,10 +3,10 @@ import GameContext from "./gameContext";
 import PlayerTurn from "./playerTurn";
 
 export default function () {
-    return (
-        <GameContext>
-            <PlayerTurn />
-            <Board />
-        </GameContext>
-    )
+  return (
+    <GameContext>
+      <PlayerTurn />
+      <Board />
+    </GameContext>
+  );
 }
