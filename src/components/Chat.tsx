@@ -2,7 +2,7 @@
 
 // TODO: Notifier l'utilisateur quand message reçu (ex: pastille rouge)
 // TODO: Mettre le chat au dessus de l'overlay pour permettre la discussion post game
-import { For, Show, createSignal, onCleanup } from "solid-js";
+import { For, Show, createEffect, createSignal, onCleanup } from "solid-js";
 import ChatMessage, { ChatMessageProps } from "./ChatMessage";
 import { Socket } from "socket.io-client";
 import { PieceEnum } from "./gameContext";
@@ -41,6 +41,11 @@ type ChatProps = {
   socket: Socket
 }
 
+enum MsgNotRead {
+  increment,
+  reset
+}
+
 function Chat(props: ChatProps){
   const socket = props.socket
   // setMessages([{message: "moi", temps: "mtnt", who: WhoChatEnum.self},
@@ -50,14 +55,15 @@ function Chat(props: ChatProps){
   // Affiche ou masque le chat
   const toggleDiv = () => {
     setIsDivVisible(!isDivVisible()); // Utilisez isDivVisible() pour lire la valeur sans l'appeler comme une fonction
+    updateScrollTop()
   };
 
   // Affiche le nombre de message entre chaque input ou action button
-  const [NbMsgNotRead, setNbMsgNotRead] = createSignal<number>(0)
+  const [NbMsgNotRead, setNbMsgNotRead] = createSignal(0)
   // Met à jour le nombre de message que l'utilisateur n'a pas encore régarder
   // Si le locuteur envoie un message NbMsgNotRead est remis à zéro.
-  const NbMsgNotReadToPrint = (nb: number) => { 
-    if (nb > 0) {
+  const NbMsgNotReadToPrint = (action: MsgNotRead) => { 
+    if (MsgNotRead.increment === action) {
       setNbMsgNotRead((prevValue) => prevValue + 1);
     } else {
       setNbMsgNotRead(0);
@@ -68,30 +74,36 @@ function Chat(props: ChatProps){
   // Lorsque la touche entrée est appuyé, ajoute le message dans le chat.
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
-      const chatDiv = document.getElementById('chat'); 
       const input = e.currentTarget;
-      if(input instanceof HTMLInputElement && chatDiv != null){
+      if(input instanceof HTMLInputElement){
         // Mettre à jour la liste des messages
         // TODO: Mettre en place affichage temporaire pour 'cacher' lag reponse serveur
-
         // Send to server 
         sendMessage(input.value)
-        NbMsgNotReadToPrint(0)
         // Effacer l'input ou effectuer d'autres actions si nécessaire // ! ???
         input.value = ""
-        // Faire défiler automatiquement vers le bas pour voir le nouveau message
-        chatDiv.scrollTop = chatDiv.scrollHeight; // TODO: Fix
+        updateScrollTop()
       }
     }
   }
+  
+  // Faire défiler automatiquement vers le bas pour voir le nouveau message
+  const updateScrollTop = () => {
+    const chatDiv = document.getElementById('chat'); 
+    if(chatDiv != null){
+      chatDiv.scrollTop = chatDiv.scrollHeight;
+    }
+  } 
 
   const sendMessage = (m: string) => {
+    NbMsgNotReadToPrint(MsgNotRead.reset)
     socket.emit("message", new Message(m))
   }
 
   socket.on("messages to update", (response: ChatMessageProps[]) => {
-    NbMsgNotReadToPrint(1)
+    NbMsgNotReadToPrint(MsgNotRead.increment)
     setMessages(response)
+    updateScrollTop()
   })
   // Afficher le message du locuteur
   onCleanup(()=> {
@@ -114,12 +126,10 @@ function Chat(props: ChatProps){
                   <span style="line-height:20px;">{NbMsgNotRead()}</span>
               </div>)}
           </div>
-        {/* <img width="100" height="100" src="src/assets/speech-bubble-with-dots.png" alt="speech-bubble-with-dots"/> */}
       </button>
     </div>
     <Show when={isDivVisible()}>
       <div class=" z-chat flex flex-col fixed bottom-0 right-0 h-3/5 p-16">
-
         <div class="flex flex-col flex-grow w-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
           <div id="chat" class="flex flex-col flex-grow h-0 p-4 overflow-auto">
             <For each={messages()}>{(message) =>
@@ -130,7 +140,6 @@ function Chat(props: ChatProps){
             <input onKeyDown={handleKeyDown} class="flex items-center h-10 w-full rounded px-3 text-sm" type="text" placeholder="Type your message…"/>
           </div>
         </div>
-
       </div>
     </Show>
     </>
