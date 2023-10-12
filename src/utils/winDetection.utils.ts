@@ -1,5 +1,3 @@
-// TODO: Clean this file
-
 import {
   WinningPiecesType,
   boardState,
@@ -168,7 +166,7 @@ function checkDownRight(
   }
 }
 
-export function checkWin(
+function checkWin(
   row: number,
   column: number,
   boardStateDict: boardStateDictType
@@ -253,7 +251,7 @@ export function checkWin(
   return winningPieces;
 }
 
-export function checkWinGlobalBis() {
+export function checkWinGlobal() {
   const totalWinningPieces: WinningPiecesType = [];
 
   for (const row of rows) {
@@ -266,41 +264,4 @@ export function checkWinGlobalBis() {
     }
   }
   return totalWinningPieces;
-}
-
-export function checkWinGlobal(board: boardStateDictType) {
-  const totalWinningPieces: WinningPiecesType = [];
-
-  for (const row of rows) {
-    for (const column of columns) {
-      const winningPieces = checkWin(row, column, board);
-      if (winningPieces.length > 0) {
-        console.log(turn() + "wins");
-        totalWinningPieces.push(...winningPieces);
-      }
-    }
-  }
-  return totalWinningPieces;
-}
-
-export function checkNullBis() {
-  if (gameStep() == GameStepEnum.playing) {
-    const emptyPos = boardState()[0].filter(
-      (piece) => piece == PieceEnum.empty
-    );
-    if (emptyPos.length == 0) {
-      console.log("tie");
-      return true;
-    } else return false;
-  }
-}
-
-export function checkNull(board: boardStateDictType) {
-  if (gameStep() == GameStepEnum.playing) {
-    const emptyPos = board[0].filter((piece) => piece == PieceEnum.empty);
-    if (emptyPos.length == 0) {
-      console.log("tie");
-      return true;
-    } else return false;
-  }
 }
