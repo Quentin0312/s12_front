@@ -3,8 +3,10 @@ import { io } from "socket.io-client";
 import GameContext, {
   GameStepEnum,
   PieceEnum,
+  gameStep,
   setGameStep,
   switchTurn,
+  turn,
 } from "./gameContext";
 import { createEffect, createSignal, onCleanup } from "solid-js";
 import Board, {
@@ -88,7 +90,7 @@ export default function () {
   });
   return (
     <GameContext>
-      <PlayerTurn />
+      <PlayerTurn turn={turn()} gameStep={gameStep()} />
       <Board />
     </GameContext>
   );
