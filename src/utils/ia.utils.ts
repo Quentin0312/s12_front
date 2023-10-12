@@ -23,6 +23,16 @@ function formatBoardForIA(board: boardStateDictType) {
   return iaFormatedBoard;
 }
 
+// function getMoveCoord(column: number): PiecePosType{
+//   let rowMove: number
+//   for (const row of [...this.rows].reverse()) {
+//     if (this.board[row][column] == PieceEnum.empty) {
+//       rowMove = row;
+//       return {row: rowMove, column}
+//     }
+//   }
+// }
+
 // ! Carefull, return PiecePosType with row:-1 if move is not legal !
 function getIaMoves(): PiecePosType[] {
   const iaFormatedBoard = formatBoardForIA(boardState());

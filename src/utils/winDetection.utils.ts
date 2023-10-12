@@ -1,3 +1,5 @@
+// TODO: Clean this file
+
 import {
   WinningPiecesType,
   boardState,
@@ -5,7 +7,12 @@ import {
   columns,
   rows,
 } from "../components/board";
-import { PieceEnum, turn } from "../components/gameContext";
+import {
+  GameStepEnum,
+  PieceEnum,
+  gameStep,
+  turn,
+} from "../components/gameContext";
 
 // TODO: Delete useless: checkLeft, checkDown, checkUpRight, checkDownRight ??
 
@@ -161,7 +168,7 @@ function checkDownRight(
   }
 }
 
-function checkWin(
+export function checkWin(
   row: number,
   column: number,
   boardStateDict: boardStateDictType
@@ -246,7 +253,7 @@ function checkWin(
   return winningPieces;
 }
 
-export function checkWinGlobal() {
+export function checkWinGlobalBis() {
   const totalWinningPieces: WinningPiecesType = [];
 
   for (const row of rows) {
@@ -259,4 +266,41 @@ export function checkWinGlobal() {
     }
   }
   return totalWinningPieces;
+}
+
+export function checkWinGlobal(board: boardStateDictType) {
+  const totalWinningPieces: WinningPiecesType = [];
+
+  for (const row of rows) {
+    for (const column of columns) {
+      const winningPieces = checkWin(row, column, board);
+      if (winningPieces.length > 0) {
+        console.log(turn() + "wins");
+        totalWinningPieces.push(...winningPieces);
+      }
+    }
+  }
+  return totalWinningPieces;
+}
+
+export function checkNullBis() {
+  if (gameStep() == GameStepEnum.playing) {
+    const emptyPos = boardState()[0].filter(
+      (piece) => piece == PieceEnum.empty
+    );
+    if (emptyPos.length == 0) {
+      console.log("tie");
+      return true;
+    } else return false;
+  }
+}
+
+export function checkNull(board: boardStateDictType) {
+  if (gameStep() == GameStepEnum.playing) {
+    const emptyPos = board[0].filter((piece) => piece == PieceEnum.empty);
+    if (emptyPos.length == 0) {
+      console.log("tie");
+      return true;
+    } else return false;
+  }
 }

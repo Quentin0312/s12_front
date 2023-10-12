@@ -9,17 +9,17 @@ import {
 import { checkWinGlobal } from "./winDetection.utils";
 
 // TODO: Rewrite
-export function checkNull() {
-  if (gameStep() == GameStepEnum.playing) {
-    const emptyPos = boardState()[0].filter(
-      (piece) => piece == PieceEnum.empty
-    );
-    if (emptyPos.length == 0) {
-      console.log("tie");
-      return true;
-    } else return false;
-  }
-}
+// export function checkNull() {
+//   if (gameStep() == GameStepEnum.playing) {
+//     const emptyPos = boardState()[0].filter(
+//       (piece) => piece == PieceEnum.empty
+//     );
+//     if (emptyPos.length == 0) {
+//       console.log("tie");
+//       return true;
+//     } else return false;
+//   }
+// }
 
 // TODO: Do something cleaner with playerPieceColor in case online or ia
 export function isMoveLegal(

@@ -1,12 +1,12 @@
-import { createSignal, Switch, type JSXElement, Match } from "solid-js";
+import { createSignal, Switch, JSXElement, Match } from "solid-js";
 
 import Header from "./components/header";
-import { LanguageEnum } from "./languageDict";
 import Menu from "./components/menu";
 import OnlineGame from "./components/onlineGame";
 import LocalGame from "./components/localGame";
 import IaGame from "./components/iaGame";
 
+import { LanguageEnum } from "./languageDict";
 // TODO: Par default utiliser la langue du browser
 // TODO: The user should be able to change langage
 // TODO: Delete chinese troll language ?
