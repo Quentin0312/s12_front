@@ -4,9 +4,7 @@ import { PiecePosType, boardStateDictType } from "../components/board";
 import { GameStepEnum, PieceEnum } from "../components/gameContext";
 import { checkNull, checkWinGlobal } from "../utils/board.utils";
 
-// import { checkNull, checkWinGlobal } from "../utils/winDetection.utils";
-
-// TODO: Use diff type for GameStepEnum ets ?
+// TODO: Use diff type for GameStepEnum etc ?
 
 export class Board {
   board: boardStateDictType;
@@ -56,6 +54,7 @@ export class Board {
   }
 
   constructor() {
+    // TODO: Try to refactor
     this.rows = [0, 1, 2, 3, 4, 5];
     this.board = this.getInitialBoard();
     this.turn = PieceEnum.red;
@@ -86,5 +85,25 @@ export class Board {
     this.situation = this.getSituation();
 
     return { isMoveLegal: true, situation: this.situation };
+  }
+
+  public formatForIA(): number[] {
+    const iaFormatedBoard: number[] = [];
+    // Careful => here red is local player and yellow is the bot
+    for (let i = 0; i < 6; i++) {
+      for (const piece of this.board[i]) {
+        iaFormatedBoard.push(
+          piece == PieceEnum.empty ? 0 : piece == PieceEnum.red ? -1 : 1
+        );
+      }
+    }
+    return iaFormatedBoard;
+  }
+
+  public reset() {
+    this.rows = [0, 1, 2, 3, 4, 5];
+    this.board = this.getInitialBoard();
+    this.turn = PieceEnum.red;
+    this.situation = GameStepEnum.playing;
   }
 }
