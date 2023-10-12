@@ -1,3 +1,5 @@
+import { Network } from "synaptic";
+
 // TODO: Déplacer ces elts dans ce fichier
 import { PiecePosType } from "../components/board";
 
@@ -62,6 +64,19 @@ export class Board {
       return GameStepEnum.draw;
     } else return GameStepEnum.playing;
   }
+  // TODO: Placer plutot dans ia.utils
+  private formatForIA(): number[] {
+    const iaFormatedBoard: number[] = [];
+    // Careful => here red is local player and yellow is the bot
+    for (let i = 0; i < 6; i++) {
+      for (const piece of this.board[i]) {
+        iaFormatedBoard.push(
+          piece == PieceEnum.empty ? 0 : piece == PieceEnum.red ? -1 : 1
+        );
+      }
+    }
+    return iaFormatedBoard;
+  }
 
   // ! Find a better way to keep reactivity
   // TODO: Find a better way to keep reactivity
@@ -109,23 +124,45 @@ export class Board {
 
     return true;
   }
+  private getIaMoves(rawOutput: number[]) {
+    // let iaMoves: number[]
+    const iaColumnMoves = [...rawOutput].sort((a, b) => b - a);
+    return iaColumnMoves.map((columnMove) => rawOutput.indexOf(columnMove));
+  }
+
+  // TODO: Rewrite
+  public iaMove(bot: Network): boolean {
+    // Check actual situation
+    if (this.situation != GameStepEnum.playing) return false;
+
+    const iaFormatedBoard = this.formatForIA();
+    const rawOutput = bot.activate(iaFormatedBoard);
+    const iaMoves = this.getIaMoves(rawOutput);
+
+    for (const iaMove of iaMoves) {
+      const moveCoord = this.getMoveCoord(iaMove);
+      if (moveCoord.row != -1) {
+        this.board[moveCoord.row][moveCoord.column] = PieceEnum.yellow;
+        break;
+      }
+    }
+
+    this.situation = this.getSituation();
+
+    // TODO: Refactor
+    if (this.situation != GameStepEnum.win) {
+      // Switch turn
+      this.switchTurn();
+    } else {
+      // Assign winning pieces
+      this.winningPieces = checkWinGlobal(this.board);
+    }
+    return true;
+  }
 
   // Use this instead of board.winningPieces when reactivity not triggered
   public getWinningPieces(): PiecePosType[] {
     return checkWinGlobal(this.board);
-  }
-
-  public formatForIA(): number[] {
-    const iaFormatedBoard: number[] = [];
-    // Careful => here red is local player and yellow is the bot
-    for (let i = 0; i < 6; i++) {
-      for (const piece of this.board[i]) {
-        iaFormatedBoard.push(
-          piece == PieceEnum.empty ? 0 : piece == PieceEnum.red ? -1 : 1
-        );
-      }
-    }
-    return iaFormatedBoard;
   }
 
   public reset() {

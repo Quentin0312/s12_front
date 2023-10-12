@@ -1,16 +1,18 @@
 import { Network } from "synaptic";
-import Board from "./board";
-import GameContext, { PieceEnum } from "./gameContext";
+
+import GameContextIa, { PieceEnum } from "./gameContextIa";
+import { setPlayerPieceColor } from "./onlineGame";
+import BoardIa from "./boardIa";
 
 import networkWeights from "../ia/networkWeights.json";
-import { setPlayerPieceColor } from "./onlineGame";
+
 export const bot = Network.fromJSON(networkWeights);
 
 export default function () {
   setPlayerPieceColor(PieceEnum.red);
   return (
-    <GameContext>
-      <Board />
-    </GameContext>
+    <GameContextIa>
+      <BoardIa />
+    </GameContextIa>
   );
 }
