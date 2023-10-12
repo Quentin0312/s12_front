@@ -1,12 +1,12 @@
-import GameContextLocal, { turn, gameStep } from "./gameContextLocal";
-import PlayerTurn from "./playerTurn";
-import BoardLocal from "./boardLocal";
+import GameContextRefactored, { turn, gameStep } from "./gameContextRefactored";
+import PlayerTurnRefactored from "./playerTurnRefactored";
+import BoardRefactored from "./boardRefactored";
 
 export default function () {
   return (
-    <GameContextLocal>
-      <PlayerTurn turn={turn()} gameStep={gameStep()} />
-      <BoardLocal />
-    </GameContextLocal>
+    <GameContextRefactored>
+      <PlayerTurnRefactored turn={turn()} gameStep={gameStep()} />
+      <BoardRefactored />
+    </GameContextRefactored>
   );
 }

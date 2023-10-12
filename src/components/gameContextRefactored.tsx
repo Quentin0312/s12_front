@@ -2,17 +2,17 @@ import { JSXElement, Show } from "solid-js";
 
 import { gameLanguage } from "../App";
 import Overlay from "./overlay";
-import { boardState } from "./boardLocal";
+import { boardState } from "./boardRefactored";
 import { drawMessage, redWinMessage, yellowWinMessage } from "../languageDict";
 
-enum GameStepEnum {
+export enum GameStepEnum {
   playing,
   draw,
   win,
   opponentLeft,
   waiting,
 }
-enum PieceEnum {
+export enum PieceEnum {
   red = "red",
   yellow = "yellow",
   empty = "white",
@@ -25,7 +25,6 @@ export function gameStep(): GameStepEnum {
   return boardState().situation;
 }
 export function messageToDisplay(): string | undefined {
-  console.log("messageToDisplay reactivity");
   switch (gameStep()) {
     case GameStepEnum.draw:
       return drawMessage[gameLanguage];

@@ -1,7 +1,7 @@
 import { For, createSignal, onCleanup } from "solid-js";
 
 import { Board } from "../entities/board.entity";
-import BoardItemIa from "./boardItemIa";
+import BoardItem from "./boardItemRefactored";
 
 export type PiecePosType = { row: number; column: number };
 
@@ -17,7 +17,7 @@ export default function () {
             return (
               <For each={boardState().columns}>
                 {(column) => {
-                  return <BoardItemIa row={row} column={column} />;
+                  return <BoardItem row={row} column={column} />;
                 }}
               </For>
             );
