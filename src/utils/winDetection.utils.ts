@@ -5,12 +5,7 @@ import {
   columns,
   rows,
 } from "../components/board";
-import {
-  GameStepEnum,
-  PieceEnum,
-  gameStep,
-  turn,
-} from "../components/gameContext";
+import { PieceEnum, turn } from "../components/gameContext";
 
 // TODO: Delete useless: checkLeft, checkDown, checkUpRight, checkDownRight ??
 
