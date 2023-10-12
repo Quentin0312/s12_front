@@ -1,39 +1,41 @@
 import { Show } from "solid-js";
 
 import { PageEnum, actualPage, gameLanguage } from "../App";
+import { GameStepEnum, PieceEnum } from "./gameContext";
+
+import { playerPieceColor } from "./onlineGame";
+
 import {
   opponentTurnMessageLanguageDictType,
   playerRedTurn,
   playerYellowTurn,
   yourTurnMessageLanguageDictType,
 } from "../languageDict";
-import { GameStepEnum, PieceEnum, gameStep, turn } from "./gameContext";
-import { playerPieceColor } from "./onlineGame";
-
 import "./playerTurn.css";
 
-export default function () {
-  const color = () => (turn() == PieceEnum.red ? "red" : "yellow");
+export default function (props: { turn: PieceEnum; gameStep: GameStepEnum }) {
+  const color = () => (props.turn == PieceEnum.red ? "red" : "yellow");
   const messageToDisplay = () =>
     actualPage() == PageEnum.local
-      ? turn() == PieceEnum.red
+      ? props.turn == PieceEnum.red
         ? playerRedTurn[gameLanguage]
         : playerYellowTurn[gameLanguage]
-      : turn() == playerPieceColor()
+      : props.turn == playerPieceColor()
       ? yourTurnMessageLanguageDictType[gameLanguage]
       : opponentTurnMessageLanguageDictType[gameLanguage];
 
   return (
     <Show
       when={
-        actualPage() == PageEnum.local ||
-        (actualPage() == PageEnum.online && gameStep() == GameStepEnum.playing)
+        actualPage() == PageEnum.local || // TODO: && gameStep() != GameStepEnum.win)$ ?
+        (actualPage() == PageEnum.online &&
+          props.gameStep == GameStepEnum.playing)
       }
     >
       <div
         id="player turn"
         class={`select-none text-center text-${
-          turn() == PieceEnum.red ? "white" : "black"
+          props.turn == PieceEnum.red ? "white" : "black"
         } white w-full h-5 turn-${color()}`}
       >
         {messageToDisplay()}

@@ -1,16 +1,26 @@
 // TODO: Déplacer ces elts dans ce fichier
-import { PiecePosType, boardStateDictType } from "../components/board";
+import { PiecePosType } from "../components/board";
 
 import { GameStepEnum, PieceEnum } from "../components/gameContext";
 import { checkNull, checkWinGlobal } from "../utils/board.utils";
+
+type boardStateDictType = { [key: number]: PieceEnum[] };
+type CopyBoardType = {
+  board: boardStateDictType;
+  turn: PieceEnum;
+  situation: GameStepEnum.win | GameStepEnum.draw | GameStepEnum.playing;
+  winningPieces: PiecePosType[];
+};
 
 // TODO: Use diff type for GameStepEnum etc ?
 
 export class Board {
   board: boardStateDictType;
   turn: PieceEnum;
-  private rows: number[];
+  rows: number[];
+  columns: number[];
   situation: GameStepEnum.win | GameStepEnum.draw | GameStepEnum.playing;
+  winningPieces: PiecePosType[];
 
   private getInitialBoard(): boardStateDictType {
     const initialBoardStateDict: boardStateDictType = {};
@@ -53,38 +63,56 @@ export class Board {
     } else return GameStepEnum.playing;
   }
 
-  constructor() {
-    // TODO: Try to refactor
+  // ! Find a better way to keep reactivity
+  // TODO: Find a better way to keep reactivity
+
+  constructor(copyBoardInfos?: CopyBoardType) {
     this.rows = [0, 1, 2, 3, 4, 5];
-    this.board = this.getInitialBoard();
-    this.turn = PieceEnum.red;
-    this.situation = GameStepEnum.playing;
+    this.columns = [0, 1, 2, 3, 4, 5, 6];
+    if (copyBoardInfos) {
+      this.board = copyBoardInfos.board;
+      this.turn = copyBoardInfos.turn;
+      this.situation = copyBoardInfos.situation;
+      this.winningPieces = copyBoardInfos.winningPieces;
+    } else {
+      this.board = this.getInitialBoard();
+      this.turn = PieceEnum.red;
+      this.situation = GameStepEnum.playing;
+      this.winningPieces = [];
+    }
   }
 
-  public move(
-    playerPiece: PieceEnum,
-    column: number
-  ): { isMoveLegal: boolean; situation?: GameStepEnum } {
+  public move(playerPiece: PieceEnum, column: number): boolean {
     // Check actual situation
-    if (this.situation != GameStepEnum.playing) return { isMoveLegal: false };
+    if (this.situation != GameStepEnum.playing) return false;
 
     // Check if player's turn correspond
-    if (playerPiece != this.turn) return { isMoveLegal: false };
+    if (playerPiece != this.turn) return false;
 
     // Check if move is legal
     const moveCoord = this.getMoveCoord(column);
-    if (moveCoord.row == -1) return { isMoveLegal: false };
+    if (moveCoord.row == -1) return false;
 
     // Update board
     this.board[moveCoord.row][moveCoord.column] = playerPiece;
 
-    // Switch turn
-    this.switchTurn();
-
     // Check situation
     this.situation = this.getSituation();
 
-    return { isMoveLegal: true, situation: this.situation };
+    if (this.situation != GameStepEnum.win) {
+      // Switch turn
+      this.switchTurn();
+    } else {
+      // Assign winning pieces
+      this.winningPieces = checkWinGlobal(this.board);
+    }
+
+    return true;
+  }
+
+  // Use this instead of board.winningPieces when reactivity not triggered
+  public getWinningPieces(): PiecePosType[] {
+    return checkWinGlobal(this.board);
   }
 
   public formatForIA(): number[] {
@@ -102,8 +130,18 @@ export class Board {
 
   public reset() {
     this.rows = [0, 1, 2, 3, 4, 5];
+    this.columns = [0, 1, 2, 3, 4, 5, 6];
     this.board = this.getInitialBoard();
     this.turn = PieceEnum.red;
     this.situation = GameStepEnum.playing;
+  }
+
+  public getCopy() {
+    return new Board({
+      board: this.board,
+      turn: this.turn,
+      situation: this.situation,
+      winningPieces: this.winningPieces,
+    });
   }
 }
