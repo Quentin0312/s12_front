@@ -2,7 +2,7 @@
 
 // TODO: Notifier l'utilisateur quand message reçu (ex: pastille rouge)
 // TODO: Mettre le chat au dessus de l'overlay pour permettre la discussion post game
-import { For, Show, createEffect, createSignal, onCleanup } from "solid-js";
+import { For, JSX, Show, createEffect, createSignal, onCleanup } from "solid-js";
 import ChatMessage, { ChatMessageProps } from "./ChatMessage";
 import { Socket } from "socket.io-client";
 import { PieceEnum } from "./gameContext";
@@ -62,6 +62,9 @@ function Chat(props: ChatProps){
   const [NbMsgNotRead, setNbMsgNotRead] = createSignal(0)
   // Met à jour le nombre de message que l'utilisateur n'a pas encore régarder
   // Si le locuteur envoie un message NbMsgNotRead est remis à zéro.
+  // const updateNbMsgNotRead = () => {
+  //   messages().filter((message) => message.who !== playerPieceColor()).length;
+  // }
   const NbMsgNotReadToPrint = (action: MsgNotRead) => { 
     if (MsgNotRead.increment === action) {
       setNbMsgNotRead((prevValue) => prevValue + 1);
@@ -69,6 +72,18 @@ function Chat(props: ChatProps){
       setNbMsgNotRead(0);
     }
   }
+  let divToRender: JSX.Element;
+  createEffect(() => {
+    console.log("========: " + NbMsgNotRead())
+    const divToRender = NbMsgNotRead() > 0 ? (
+        <div style="position: absolute; top: -5px; right: -5px; background-color: red; color: white; border-radius:50%; width:25px; height:25px; text-align:center;">
+          <span style="line-height:20px;">{NbMsgNotRead()}</span>
+        </div>
+      ) : (
+        <></>
+      );
+      return divToRender;
+  })
 
   // TODO: Rewrite
   // Lorsque la touche entrée est appuyé, ajoute le message dans le chat.
@@ -96,19 +111,22 @@ function Chat(props: ChatProps){
   } 
 
   const sendMessage = (m: string) => {
-    NbMsgNotReadToPrint(MsgNotRead.reset)
-    socket.emit("message", new Message(m))
+    const msg = new Message(m)
+    socket.emit("message", msg)
+    if(msg.who === playerPieceColor()) NbMsgNotReadToPrint(MsgNotRead.reset)
   }
 
   socket.on("messages to update", (response: ChatMessageProps[]) => {
-    NbMsgNotReadToPrint(MsgNotRead.increment)
+    if(response[0].who !== playerPieceColor()) NbMsgNotReadToPrint(MsgNotRead.increment)
     setMessages(response)
     updateScrollTop()
   })
+
   // Afficher le message du locuteur
   onCleanup(()=> {
     setMessages([])
   })
+
   return (
     <>
     <div class="z-chatbutton fixed bottom-0 right-0">
@@ -121,10 +139,13 @@ function Chat(props: ChatProps){
                   <path d="M8 10H16M8 14H16M21.0039 12C21.0039 16.9706 16.9745 21 12.0039 21C9.9675 21 3.00463 21 3.00463 21C3.00463 21 4.56382 17.2561 3.93982 16.0008C3.34076 14.7956 3.00391 13.4372 3.00391 12C3.00391 7.02944 7.03334 3 12.0039 3C16.9745 3 21.0039 7.02944 21.0039 12Z" 
                         stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              {NbMsgNotRead() > 0 && (
+              {divToRender}
+              {/* {NbMsgNotRead() > 0 ? (
               <div style="position: absolute; top: -5px; right: -5px; background-color: red; color: white; border-radius:50%; width:25px; height:25px; text-align:center;">
                   <span style="line-height:20px;">{NbMsgNotRead()}</span>
-              </div>)}
+              </div>) : (
+                <></>
+              )} */}
           </div>
       </button>
     </div>
