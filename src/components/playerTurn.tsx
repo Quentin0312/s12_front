@@ -3,7 +3,7 @@ import { Show } from "solid-js";
 import { PageEnum, actualPage, gameLanguage } from "../App";
 import { GameStepEnum, PieceEnum } from "./gameContext";
 
-import { playerPieceColor } from "./onlineGame";
+import { playerPieceColor } from "./onlineGameBis";
 
 import {
   opponentTurnMessageLanguageDictType,

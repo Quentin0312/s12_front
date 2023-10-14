@@ -18,7 +18,7 @@ import {
 } from "./board";
 
 import { checkWinGlobal } from "../utils/winDetection.utils";
-import { playerPieceColor } from "./onlineGame";
+import { playerPieceColor } from "./onlineGameBis";
 
 import { checkNull, getSituation, isMoveLegal } from "../utils/game.utils";
 import { getBestIaLegalMove } from "../utils/ia.utils";
@@ -66,7 +66,6 @@ function onclickLocal(row: number, column: number) {
 function onClickOnline(row: number, column: number) {
   // TODO: Change to be able to click on the whole column
   if (!isMoveLegal(row, column, playerPieceColor() as PieceEnum)) return;
-
   setPlayerMove({ row, column });
 }
 

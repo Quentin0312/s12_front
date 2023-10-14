@@ -39,8 +39,8 @@ export default function (): JSXElement {
         </Match>
 
         <Match when={actualPage() == PageEnum.online}>
-          <OnlineGame />
-          {/* <OnlineGameBis /> */}
+          {/* <OnlineGame /> */}
+          <OnlineGameBis />
         </Match>
 
         <Match when={actualPage() == PageEnum.ia}>
