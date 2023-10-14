@@ -7,6 +7,7 @@ import LocalGame from "./components/localGame";
 import IaGame from "./components/iaGame";
 
 import { LanguageEnum } from "./languageDict";
+import OnlineGameBis from "./components/onlineGameBis";
 // TODO: Par default utiliser la langue du browser
 // TODO: The user should be able to change langage
 // TODO: Delete chinese troll language ?
@@ -39,6 +40,7 @@ export default function (): JSXElement {
 
         <Match when={actualPage() == PageEnum.online}>
           <OnlineGame />
+          {/* <OnlineGameBis /> */}
         </Match>
 
         <Match when={actualPage() == PageEnum.ia}>
