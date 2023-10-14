@@ -15,15 +15,23 @@ import "./playerTurn.css";
 
 export default function (props: { turn: PieceEnum; gameStep: GameStepEnum }) {
   const color = () => (props.turn == PieceEnum.red ? "red" : "yellow");
-  // TODO: Mettre en place switch case !
-  const messageToDisplay = () =>
-    actualPage() == PageEnum.local
-      ? props.turn == PieceEnum.red
-        ? playerRedTurn[gameLanguage]
-        : playerYellowTurn[gameLanguage]
-      : props.turn == playerPieceColor()
-      ? yourTurnMessageLanguageDictType[gameLanguage]
-      : opponentTurnMessageLanguageDictType[gameLanguage];
+
+  const messageToDisplay = () => {
+    switch (actualPage()) {
+      case PageEnum.local:
+        if (props.turn == PieceEnum.red) return playerRedTurn[gameLanguage];
+        else return playerYellowTurn[gameLanguage];
+
+      case PageEnum.online:
+        if (props.turn == playerPieceColor())
+          return yourTurnMessageLanguageDictType[gameLanguage];
+        else return opponentTurnMessageLanguageDictType[gameLanguage];
+
+      default:
+        console.log("switch case error; messageToDisplay()");
+        break;
+    }
+  };
 
   return (
     <Show
