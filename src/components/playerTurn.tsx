@@ -15,6 +15,7 @@ import "./playerTurn.css";
 
 export default function (props: { turn: PieceEnum; gameStep: GameStepEnum }) {
   const color = () => (props.turn == PieceEnum.red ? "red" : "yellow");
+  // TODO: Mettre en place switch case !
   const messageToDisplay = () =>
     actualPage() == PageEnum.local
       ? props.turn == PieceEnum.red

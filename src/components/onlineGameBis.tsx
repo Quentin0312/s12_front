@@ -5,31 +5,18 @@ import GameContext, {
   PieceEnum,
   gameStep,
   setGameStep,
-  switchTurn,
   turn,
 } from "./gameContext";
-import { createEffect, createSignal, onCleanup } from "solid-js";
-import Board, {
-  WinningPiecesType,
-  boardStateDictType,
-  getInitialBoard,
-  setBoardState,
-  setWinningPieces,
-} from "./board";
-import { playerMove, setPlayerMove } from "./boardItem";
+import { createSignal, onCleanup } from "solid-js";
+import Board, { getInitialBoard, setBoardState } from "./board";
+import { setPlayerMove } from "./boardItem";
 import PlayerTurn from "./playerTurn";
 import WebSocket from "./webSocket";
 
 // TODO: Move cause also use in iaGame
+// TODO En faire un Signal dérivé ?
 export const [playerPieceColor, setPlayerPieceColor] =
   createSignal<PieceEnum>();
-
-// TODO: Don't use GameStepEnum but a specific one ?
-// type WinningRequestType = {
-//   result: GameStepEnum;
-//   board: boardStateDictType;
-//   winningPieces?: WinningPiecesType;
-// };
 
 export default function () {
   setGameStep(GameStepEnum.waiting);
@@ -42,49 +29,8 @@ export default function () {
   // TODO: if socket.active est false donc GamestepEnum.bug à mettre en place
   // ! et ses conséquences et actions
 
-  // player color
-  // socket.on("player color", (req: PieceEnum.red | PieceEnum.yellow) => {
-  //   console.log(req);
-  //   setPlayerPieceColor(req == "red" ? PieceEnum.red : PieceEnum.yellow);
-  //   if (req == "yellow") {
-  //     // setGameStep(GameStepEnum.waiting)
-  //     socket.on("opponent ready", () => {
-  //       setGameStep(GameStepEnum.playing);
-  //     });
-  //   } else {
-  //     setGameStep(GameStepEnum.playing);
-  //     console.log("red so opponent is already ready");
-  //   }
-  // });
-
-  // socket.on("disconnection order", () => {
-  //   setGameStep(GameStepEnum.opponentLeft);
-  //   socket.disconnect();
-  // });
-
-  // createEffect(() => {
-  //   const move = playerMove();
-  //   if (!move) return;
-  //   socket.emit("move", move);
-  // });
-
-  // TODO: Check these ones works properly
-  // socket.on("moved", (req: boardStateDictType) => {
-  //   switchTurn();
-  //   setBoardState(req);
-  // });
-  // socket.on("game result", (req: WinningRequestType) => {
-  //   setBoardState(req.board);
-  //   if (req.winningPieces) {
-  //     setWinningPieces(req.winningPieces);
-  //   }
-  //   setGameStep(req.result);
-  //   socket.disconnect();
-  // });
-
   onCleanup(() => {
     // TODO: Check if working properly
-    // socket.disconnect();
     setBoardState(getInitialBoard());
     setPlayerMove();
     setPlayerPieceColor();

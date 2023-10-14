@@ -25,8 +25,6 @@ type WinningRequestType = {
 };
 
 export default function (props: { socket: Socket }) {
-  // const socket = props.socket;
-
   // -------------PLAYING-----------------
   props.socket.on("player color", (req: PieceEnum.red | PieceEnum.yellow) => {
     console.log(req);
