@@ -38,7 +38,11 @@ export default function () {
   // iaWorker.postMessage(JSON.stringify(workerParams));
   // ------------- Preuve que ia_alphabeta_js fonctionne --------------
   // const iaWorker = new Worker("/src/ia_alphabeta_js/minimax.js");
-  const iaWorker = new Worker("./assets/minimax.js");
+  const iaWorker = new Worker(
+    import.meta.env.DEV
+      ? "/src/ia_alphabeta_js/minimax.js"
+      : "./assets/minimax.js"
+  );
   iaWorker.addEventListener(
     "message",
     function handler(e) {

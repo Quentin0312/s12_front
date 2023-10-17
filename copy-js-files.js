@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const sourceDir = path.join(__dirname, "js_files");
+const sourceDir = path.join(__dirname, "src/ia_alphabeta_js");
 const targetDir = path.join(__dirname, "dist/assets");
 
 const copyFiles = (source, target) => {
