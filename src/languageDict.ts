@@ -1,3 +1,5 @@
+// TODO: En faire un objet ? OU le best practice avec plusieurs fichiers ? OU le 2 ?
+
 export enum LanguageEnum {
   fr = "french",
   eng = "english",

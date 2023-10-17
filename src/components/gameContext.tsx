@@ -22,11 +22,13 @@ export enum GameStepEnum {
   opponentLeft,
   waiting,
 }
-
+// ! ==========> Remplacer tout ça par Board dans un signal possible
+// ! quand createEffect correspondant trigger => mettre à jour le turn et gamestep ?
 export const [turn, setTurn] = createSignal(PieceEnum.red);
 export const [gameStep, setGameStep] = createSignal(GameStepEnum.playing);
 export const [messageToDisplay, setMessageToDisplay] = createSignal<string>();
 
+// ! Delete ? and use the board.turn instead ?
 export function switchTurn() {
   setTurn((prev) => (prev == PieceEnum.red ? PieceEnum.yellow : PieceEnum.red));
 }

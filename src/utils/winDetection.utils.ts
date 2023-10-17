@@ -161,7 +161,7 @@ function checkDownRight(
   }
 }
 
-function checkWin(
+export function checkWin(
   row: number,
   column: number,
   boardStateDict: boardStateDictType

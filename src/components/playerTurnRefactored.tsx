@@ -1,9 +1,9 @@
 import { Show } from "solid-js";
 
 import { PageEnum, actualPage, gameLanguage } from "../App";
-import { GameStepEnum, PieceEnum } from "./gameContext";
+import { GameStepEnum, PieceEnum } from "./gameContextRefactored";
 
-import { playerPieceColor } from "./onlineGameBis";
+import { playerPieceColor } from "./onlineGame";
 
 import {
   opponentTurnMessageLanguageDictType,
@@ -15,23 +15,14 @@ import "./playerTurn.css";
 
 export default function (props: { turn: PieceEnum; gameStep: GameStepEnum }) {
   const color = () => (props.turn == PieceEnum.red ? "red" : "yellow");
-
-  const messageToDisplay = () => {
-    switch (actualPage()) {
-      case PageEnum.local:
-        if (props.turn == PieceEnum.red) return playerRedTurn[gameLanguage];
-        else return playerYellowTurn[gameLanguage];
-
-      case PageEnum.online:
-        if (props.turn == playerPieceColor())
-          return yourTurnMessageLanguageDictType[gameLanguage];
-        else return opponentTurnMessageLanguageDictType[gameLanguage];
-
-      default:
-        console.log("switch case error; messageToDisplay()");
-        break;
-    }
-  };
+  const messageToDisplay = () =>
+    actualPage() == PageEnum.local
+      ? props.turn == PieceEnum.red
+        ? playerRedTurn[gameLanguage]
+        : playerYellowTurn[gameLanguage]
+      : props.turn == playerPieceColor()
+      ? yourTurnMessageLanguageDictType[gameLanguage]
+      : opponentTurnMessageLanguageDictType[gameLanguage];
 
   return (
     <Show
