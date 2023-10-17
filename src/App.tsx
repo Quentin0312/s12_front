@@ -1,12 +1,12 @@
-import { createSignal, Switch, type JSXElement, Match } from "solid-js";
+import { createSignal, Switch, JSXElement, Match } from "solid-js";
 
 import Header from "./components/header";
-import { LanguageEnum } from "./languageDict";
 import Menu from "./components/menu";
-import OnlineGame from "./components/onlineGame";
 import LocalGame from "./components/localGame";
-import IaGame from "./components/iaGame";
+import IaGameMedium from "./components/iaGameMedium";
 
+import { LanguageEnum } from "./languageDict";
+import OnlineGameBis from "./components/onlineGameBis";
 // TODO: Par default utiliser la langue du browser
 // TODO: The user should be able to change langage
 // TODO: Delete chinese troll language ?
@@ -38,11 +38,16 @@ export default function (): JSXElement {
         </Match>
 
         <Match when={actualPage() == PageEnum.online}>
-          <OnlineGame />
+          {/* <OnlineGame /> */}
+          <OnlineGameBis />
         </Match>
 
-        <Match when={actualPage() == PageEnum.ia}>
+        {/* <Match when={actualPage() == PageEnum.iaEasy}>
           <IaGame />
+        </Match> */}
+
+        <Match when={actualPage() == PageEnum.ia}>
+          <IaGameMedium />
         </Match>
       </Switch>
     </>
