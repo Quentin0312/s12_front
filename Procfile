@@ -1,1 +1,1 @@
-web: npm install -g serve && serve -s ./dist_bis
+web: npm install -g serve && npm run buildc && serve -s ./dist
