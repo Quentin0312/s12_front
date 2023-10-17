@@ -2,9 +2,8 @@ import { createSignal, Switch, JSXElement, Match } from "solid-js";
 
 import Header from "./components/header";
 import Menu from "./components/menu";
-import OnlineGame from "./components/onlineGame";
 import LocalGame from "./components/localGame";
-import IaGame from "./components/iaGame";
+import IaGameMedium from "./components/iaGameMedium";
 
 import { LanguageEnum } from "./languageDict";
 import OnlineGameBis from "./components/onlineGameBis";
@@ -43,8 +42,12 @@ export default function (): JSXElement {
           <OnlineGameBis />
         </Match>
 
-        <Match when={actualPage() == PageEnum.ia}>
+        {/* <Match when={actualPage() == PageEnum.iaEasy}>
           <IaGame />
+        </Match> */}
+
+        <Match when={actualPage() == PageEnum.ia}>
+          <IaGameMedium />
         </Match>
       </Switch>
     </>

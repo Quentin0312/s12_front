@@ -160,6 +160,28 @@ export class Board {
     return true;
   }
 
+  public getMatrixFormatedBoard(): number[][] {
+    const finalMatrix: number[][] = [];
+    for (const row of this.rows) {
+      const actualRow = [];
+      for (const column of this.columns) {
+        switch (this.board[row][column]) {
+          case PieceEnum.empty:
+            actualRow.push(0);
+            break;
+          case PieceEnum.red:
+            actualRow.push(1);
+            break;
+          case PieceEnum.yellow:
+            actualRow.push(2);
+            break;
+        }
+      }
+      finalMatrix.push(actualRow);
+    }
+    return finalMatrix;
+  }
+
   // Use this instead of board.winningPieces when reactivity not triggered
   public getWinningPieces(): PiecePosType[] {
     return checkWinGlobal(this.board);
