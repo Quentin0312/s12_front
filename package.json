@@ -5,9 +5,8 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview",
-    "buildc": "npm i && vite build && node copy-js-files.js"
+    "build": "vite build  && node copy-js-files.js",
+    "serve": "vite preview"
   },
   "license": "MIT",
   "devDependencies": {
