@@ -28,6 +28,11 @@ type WinningRequestType = {
   winningPieces?: WinningPiecesType;
 };
 
+type TimerInfos = {
+  currentTime: string;
+  playerPiece: string;
+}
+
 export default function () {
   setGameStep(GameStepEnum.waiting);
   // TODO: Put url in .env
@@ -38,6 +43,9 @@ export default function () {
   );
   // TODO: if socket.active est false donc GamestepEnum.bug à mettre en place
   // et ses conséquences et actions
+
+   const [timerRed, setTimerRed] = createSignal("0:00");
+   const [timerYellow, setTimerYellow] = createSignal("0:00");
 
   // player color
   socket.on("player color", (req: PieceEnum.red | PieceEnum.yellow) => {
@@ -79,6 +87,10 @@ export default function () {
     socket.disconnect();
   });
 
+  socket.on("timer", (req: TimerInfos) => {
+    req.playerPiece == PieceEnum.red ? setTimerRed(req.currentTime) : setTimerYellow(req.currentTime)
+  })
+
   onCleanup(() => {
     // TODO: Check if working properly
     socket.disconnect();
@@ -86,10 +98,19 @@ export default function () {
     setPlayerMove();
     setPlayerPieceColor();
   });
+
   return (
+    <>
     <GameContext>
       <PlayerTurn />
       <Board />
     </GameContext>
+    <div>
+      <p> Rouge </p> 
+      <p id = "timerDisplayRed"> {timerRed()} </p> 
+      <p> Jaune </p> 
+      <p id = "timerDisplayYellow"> {timerYellow()} </p> 
+    </div>
+    </>
   );
 }
