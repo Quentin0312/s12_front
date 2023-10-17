@@ -2,10 +2,12 @@ import { PieceEnum, turn } from "./gameContextRefactored";
 import { PiecePosType, boardState, setBoardState } from "./boardRefactored";
 import { bot } from "./iaGame";
 
-import "./boardItem.css";
 import { PageEnum, actualPage } from "../App";
+import "./boardItem.css";
+import { setPlayerMoveMedium } from "./iaGameMedium";
+import { aiDifficultyLevel } from "./menu";
 
-function triggerBoardReactivity() {
+export function triggerBoardReactivity() {
   setBoardState((prev) => {
     return prev.getCopy();
   });
@@ -32,6 +34,21 @@ function onClickIa(column: number) {
   triggerBoardReactivity();
 }
 
+function onClickIaMedium(column: number) {
+  // Player move
+  const isPlayerMoveLegal = boardState().move(PieceEnum.red, column);
+  if (!isPlayerMoveLegal) return;
+
+  triggerBoardReactivity();
+
+  // AI move
+  setPlayerMoveMedium({
+    matrixBoard: boardState().getMatrixFormatedBoard(),
+    depth: String(aiDifficultyLevel()),
+    maximizingPlayer: false,
+  });
+}
+
 export default function (props: PiecePosType) {
   function fillColor() {
     return boardState().board[props.row][props.column];
@@ -48,11 +65,16 @@ export default function (props: PiecePosType) {
     <svg
       height="100"
       width="100"
-      onClick={() =>
-        actualPage() == PageEnum.local
-          ? onclickLocal(props.column)
-          : onClickIa(props.column)
-      }
+      onClick={() => {
+        switch (actualPage()) {
+          case PageEnum.local:
+            onclickLocal(props.column);
+            break;
+          case PageEnum.ia:
+            onClickIaMedium(props.column);
+            break;
+        }
+      }}
     >
       <circle
         class={isBlinking() ? "blink" : ""}
