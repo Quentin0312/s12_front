@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const sourceDir = path.join(__dirname, "js_files");
-const targetDir = path.join(__dirname, "dist");
+const targetDir = path.join(__dirname, "dist/assets");
 
 const copyFiles = (source, target) => {
   fs.readdirSync(source).forEach((file) => {
