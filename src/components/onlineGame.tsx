@@ -16,11 +16,20 @@ type WinningRequestType = {
     winningPieces?: WinningPiecesType
 }
 
+type TimerInfos = {
+  currentTime: string;
+  playerPiece: string;
+}
+
 
 export default function () {
     // TODO: Put url in .env
     const socket = io(import.meta.env.DEV ? "http://localhost:8000" : "https://s12-back-bf7d3c384d86.herokuapp.com/")
     
+    // Timer des joueurs 
+    const [timerRed, setTimerRed] = createSignal("0:00");
+    const [timerYellow, setTimerYellow] = createSignal("0:00");
+
     // player color
     socket.on("player color", (req) => {
       console.log(req)
@@ -60,6 +69,11 @@ export default function () {
         setGameStep(req.result)
         socket.disconnect()
     })
+    
+    // Mise à jour des timer 
+    socket.on("timer", (req: TimerInfos) => {
+      req.playerPiece == PieceEnum.red ? setTimerRed(req.currentTime) : setTimerYellow(req.currentTime)
+    })
 
     onCleanup(()=> {
         // TODO: Check if working properly
@@ -68,9 +82,23 @@ export default function () {
         setPlayerMove()
     })
     return (
+      <>
+       {/* space-x : gap
+           p-      : padding */}
+        <div class="flex justify-center items-center w-screen space-x-3 p-2">
+          <span class="countdown font-mono text-2xl">
+            {timerRed()}
+          </span>
+          <div class="w-12 h-12 bg-red-600 rounded-full"></div>
+          <div class="w-12 h-12 bg-yellow-400 rounded-full"></div>
+          <span class="countdown font-mono text-2xl">
+            {timerYellow()}
+          </span>
+        </div>
         <GameContext>
             <Board />
             <Chat socket={socket}/>
         </GameContext>
+      </>
     );
 }
