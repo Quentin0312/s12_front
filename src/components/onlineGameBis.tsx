@@ -39,6 +39,8 @@ export default function () {
     setBoardState(getInitialBoard());
     setPlayerMove();
     setPlayerPieceColor();
+    setTimerRed("0:00");
+    setTimerYellow("0:00");
   });
   return (
     <>
