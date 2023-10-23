@@ -1,15 +1,14 @@
 // TODO: Rewrite the whole file !!!!!!!
 
-// TODO: Notifier l'utilisateur quand message reçu (ex: pastille rouge)
 // TODO: Mettre le chat au dessus de l'overlay pour permettre la discussion post game
-import { For, Show, createSignal, onCleanup } from "solid-js";
+// TODO: Mettre en place clic à l'exterieur du chat, ferme celui-ci
+import { For, Show, createEffect, createSignal, onCleanup } from "solid-js";
 import ChatMessage, { ChatMessageProps } from "./ChatMessage";
 import { Socket } from "socket.io-client";
 import { PieceEnum } from "./gameContext";
-import { playerPieceColor } from "./onlineGame";
+import { playerPieceColor } from "./onlineGameBis";
+import ChatButton from "./ChatButton";
 
-// TODO: Move
-// TODO: Find way to link this to ChatMessageProps type !
 export class Message {
   who: PieceEnum;
   message: string;
@@ -35,34 +34,27 @@ export class Message {
   }
 }
 
-export const [messages, setMessages] = createSignal<ChatMessageProps[]>([]);
+export const [messageList, setMessagesList] = createSignal<ChatMessageProps[]>(
+  []
+);
 
 type ChatProps = {
   socket: Socket;
 };
 
+const [isChatVisible, setIsChatVisible] = createSignal<boolean>(false);
+
+// Affiche ou masque le chat
+export const toggleChat = () => {
+  setIsChatVisible(!isChatVisible()); // Utilisez isDivVisible() pour lire la valeur sans l'appeler comme une fonction
+};
+
+// Affiche le nombre de message entre chaque input ou action button
+export const [unreadMessagesNumber, setUnreadMessagesNumber] =
+  createSignal<number>(0);
+
 function Chat(props: ChatProps) {
   const socket = props.socket;
-  // setMessages([{message: "moi", temps: "mtnt", who: WhoChatEnum.self},
-  // {message: "pas moi", temps: "mtnt", who: WhoChatEnum.opponent}])
-  const [isDivVisible, setIsDivVisible] = createSignal<boolean>(false);
-
-  // Affiche ou masque le chat
-  const toggleDiv = () => {
-    setIsDivVisible(!isDivVisible()); // Utilisez isDivVisible() pour lire la valeur sans l'appeler comme une fonction
-  };
-
-  // Affiche le nombre de message entre chaque input ou action button
-  const [NbMsgNotRead, setNbMsgNotRead] = createSignal<number>(0);
-  // Met à jour le nombre de message que l'utilisateur n'a pas encore régarder
-  // Si le locuteur envoie un message NbMsgNotRead est remis à zéro.
-  const NbMsgNotReadToPrint = (nb: number) => {
-    if (nb > 0) {
-      setNbMsgNotRead((prevValue) => prevValue + 1);
-    } else {
-      setNbMsgNotRead(0);
-    }
-  };
 
   // TODO: Rewrite
   // Lorsque la touche entrée est appuyé, ajoute le message dans le chat.
@@ -74,11 +66,14 @@ function Chat(props: ChatProps) {
         // Mettre à jour la liste des messages
         // TODO: Mettre en place affichage temporaire pour 'cacher' lag reponse serveur
 
+        if (input.value == "") return;
+
         // Send to server
         sendMessage(input.value);
-        NbMsgNotReadToPrint(0);
-        // Effacer l'input ou effectuer d'autres actions si nécessaire // ! ???
+
+        // Reset input value
         input.value = "";
+
         // Faire défiler automatiquement vers le bas pour voir le nouveau message
         chatDiv.scrollTop = chatDiv.scrollHeight; // TODO: Fix
       }
@@ -86,54 +81,46 @@ function Chat(props: ChatProps) {
   };
 
   const sendMessage = (m: string) => {
-    socket.emit("message", new Message(m));
+    const messageToEmit = new Message(m);
+    console.log("messageToEmit", messageToEmit);
+    socket.emit("message", messageToEmit);
   };
 
+  // TODO: Rename "messages to update" => "updatedMessageList"
   socket.on("messages to update", (response: ChatMessageProps[]) => {
-    NbMsgNotReadToPrint(1);
-    setMessages(response);
+    console.log("socket message updated", response);
+    // Bulle de notification de reception de message
+    setMessagesList(response);
+    if (!isChatVisible()) {
+      setUnreadMessagesNumber((prev) => prev + 1);
+    }
   });
-  // Afficher le message du locuteur
+
+  createEffect(() => {
+    if (isChatVisible()) {
+      setUnreadMessagesNumber(0);
+    }
+  });
+
+  createEffect(() => {
+    console.log("createEffect on messageList", messageList().at(-1));
+  });
+
   onCleanup(() => {
-    setMessages([]);
+    setMessagesList([]);
+    // ! Les autres signaux ?
   });
   return (
     <>
-      <div class="z-chatbutton fixed bottom-0 right-0">
-        <button class=" p-4 rounded-lg shadow-md" onClick={toggleDiv}>
-          <div style={{"position":"relative","display":"inline-block"}}>
-            <svg
-              width="50px"
-              height="50px"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8 10H16M8 14H16M21.0039 12C21.0039 16.9706 16.9745 21 12.0039 21C9.9675 21 3.00463 21 3.00463 21C3.00463 21 4.56382 17.2561 3.93982 16.0008C3.34076 14.7956 3.00391 13.4372 3.00391 12C3.00391 7.02944 7.03334 3 12.0039 3C16.9745 3 21.0039 7.02944 21.0039 12Z"
-                stroke="#000000"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-            {NbMsgNotRead() > 0 && (
-              <div style={{"position":"absolute","top":"-5px","right":"-5px","background-color":"red","color":"white","border-radius":"50%","width":"25px","height":"25px","text-align":"center"}}>
-                <span style={{"line-height":"20px"}}>{NbMsgNotRead()}</span>
-              </div>
-            )}
-          </div>
-          {/* <img width="100" height="100" src="src/assets/speech-bubble-with-dots.png" alt="speech-bubble-with-dots"/> */}
-        </button>
-      </div>
-      <Show when={isDivVisible()}>
+      <ChatButton />
+      <Show when={isChatVisible()}>
         <div class=" z-chat flex flex-col fixed bottom-0 right-0 h-3/5 p-16">
           <div class="flex flex-col flex-grow w-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
             <div
               id="chat"
               class="flex flex-col flex-grow h-0 p-4 overflow-auto"
             >
-              <For each={messages()}>
+              <For each={messageList()}>
                 {(message) => (
                   <ChatMessage
                     message={message.message}
@@ -158,5 +145,4 @@ function Chat(props: ChatProps) {
   );
 }
 
-// TODO: export default function instead !
 export default Chat;

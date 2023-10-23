@@ -1,6 +1,6 @@
 import { JSXElement } from "solid-js";
 import { PieceEnum } from "./gameContext";
-import { playerPieceColor } from "./onlineGame";
+import { playerPieceColor } from "./onlineGameBis";
 
 export enum WhoChatEnum {
   opponent,
@@ -25,14 +25,12 @@ export default function (props: ChatMessageProps) {
           </div>
           <span class="text-xs text-gray-500 leading-none"> {temps} </span>
         </div>
-        {/* <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300" /> */}
       </div>
     );
   };
   const interlocuteur = (message: string, temps: string) => {
     return (
       <div class="flex w-full mt-2 space-x-3 max-w-xs">
-        {/* <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div> */}
         <div>
           <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
             <p class="text-sm"> {message} </p>
