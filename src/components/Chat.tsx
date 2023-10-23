@@ -82,13 +82,11 @@ function Chat(props: ChatProps) {
 
   const sendMessage = (m: string) => {
     const messageToEmit = new Message(m);
-    console.log("messageToEmit", messageToEmit);
     socket.emit("message", messageToEmit);
   };
 
   // TODO: Rename "messages to update" => "updatedMessageList"
   socket.on("messages to update", (response: ChatMessageProps[]) => {
-    console.log("socket message updated", response);
     // Bulle de notification de reception de message
     setMessagesList(response);
     if (!isChatVisible()) {
@@ -100,10 +98,6 @@ function Chat(props: ChatProps) {
     if (isChatVisible()) {
       setUnreadMessagesNumber(0);
     }
-  });
-
-  createEffect(() => {
-    console.log("createEffect on messageList", messageList().at(-1));
   });
 
   onCleanup(() => {
