@@ -12,11 +12,16 @@ import Board, { getInitialBoard, setBoardState } from "./board";
 import { setPlayerMove } from "./boardItem";
 import PlayerTurn from "./playerTurn";
 import WebSocket from "./webSocket";
+import Chat from "./Chat";
 
 // TODO: Move cause also use in iaGame
 // TODO En faire un Signal dérivé ?
 export const [playerPieceColor, setPlayerPieceColor] =
   createSignal<PieceEnum>();
+
+// Timer des joueurs
+export const [timerRed, setTimerRed] = createSignal("0:00");
+export const [timerYellow, setTimerYellow] = createSignal("0:00");
 
 export default function () {
   setGameStep(GameStepEnum.waiting);
@@ -36,10 +41,19 @@ export default function () {
     setPlayerPieceColor();
   });
   return (
-    <GameContext>
-      <WebSocket socket={socket} />
-      <PlayerTurn turn={turn()} gameStep={gameStep()} />
-      <Board />
-    </GameContext>
+    <>
+      <div class="flex justify-center items-center w-screen space-x-3 p-2">
+        <span class="countdown font-mono text-2xl">{timerRed()}</span>
+        <div class="w-12 h-12 bg-red-600 rounded-full" />
+        <div class="w-12 h-12 bg-yellow-400 rounded-full" />
+        <span class="countdown font-mono text-2xl">{timerYellow()}</span>
+      </div>
+      <GameContext>
+        <WebSocket socket={socket} />
+        <PlayerTurn turn={turn()} gameStep={gameStep()} />
+        <Board />
+        <Chat socket={socket} />
+      </GameContext>
+    </>
   );
 }
