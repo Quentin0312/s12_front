@@ -5,6 +5,8 @@ module.exports = {
   ],
   theme: {
     zIndex: {
+      'chat' : 1,
+      'chatbutton' : 10,
       'overlay' : 800,
       'header' : 1000
     },

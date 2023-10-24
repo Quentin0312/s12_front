@@ -7,7 +7,11 @@ import {
   setGameStep,
   switchTurn,
 } from "./gameContext";
-import { setPlayerPieceColor } from "./onlineGameBis";
+import {
+  setPlayerPieceColor,
+  setTimerRed,
+  setTimerYellow,
+} from "./onlineGameBis";
 import { createEffect, onCleanup } from "solid-js";
 import { playerMove } from "./boardItem";
 import {
@@ -16,6 +20,11 @@ import {
   setBoardState,
   setWinningPieces,
 } from "./board";
+
+type TimerInfos = {
+  currentTime: string;
+  playerPiece: string;
+};
 
 // TODO: Don't use GameStepEnum but a specific one ?
 type WinningRequestType = {
@@ -57,6 +66,13 @@ export default function (props: { socket: Socket }) {
     }
     setGameStep(req.result);
     props.socket.disconnect();
+  });
+
+  // Mise à jour des timer
+  props.socket.on("timer", (req: TimerInfos) => {
+    req.playerPiece == PieceEnum.red
+      ? setTimerRed(req.currentTime)
+      : setTimerYellow(req.currentTime);
   });
 
   // -------------CONNECTION-----------------

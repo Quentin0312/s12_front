@@ -38,13 +38,9 @@ export default function (): JSXElement {
         </Match>
 
         <Match when={actualPage() == PageEnum.online}>
-          {/* <OnlineGame /> */}
+          {/* <OnlineGame /> TO DELETE */}
           <OnlineGameBis />
         </Match>
-
-        {/* <Match when={actualPage() == PageEnum.iaEasy}>
-          <IaGame />
-        </Match> */}
 
         <Match when={actualPage() == PageEnum.ia}>
           <IaGameMedium />
