@@ -75,8 +75,17 @@ function Chat(props: ChatProps) {
         input.value = "";
 
         // Faire défiler automatiquement vers le bas pour voir le nouveau message
-        chatDiv.scrollTop = chatDiv.scrollHeight; // TODO: Fix
+        // chatDiv.scrollTop = chatDiv.scrollHeight; // TODO: Fix
+        updateScrollTop();
       }
+    }
+  };
+
+  // Faire défiler automatiquement vers le bas pour voir le nouveau message
+  const updateScrollTop = () => {
+    const chatDiv = document.getElementById("chat");
+    if (chatDiv != null) {
+      chatDiv.scrollTop = chatDiv.scrollHeight;
     }
   };
 
