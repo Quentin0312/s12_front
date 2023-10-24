@@ -24,19 +24,44 @@ export const [aiDifficultyLevel, setAiDifficultyLevel] = createSignal(
 );
 
 export default function () {
+
+  const [inputValue, setInputValue] = createSignal("");
+
+
   return (
     <>
     <div>
+      {/* ====================== Local =========================== */}
+      <button class="btn btn-neutral m-1">Partie local</button>
+      {/* ====================== En Ligne =========================== */}
       <div class="dropdown">
         <label tabindex="0" class="btn btn-neutral m-1">Partie en ligne</label>
         <div tabindex="0" class="dropdown-content z-[1] card card-compact w-64 p-2 shadow bg-primary text-primary-content">
           <div class="card-body">
             <button class="btn btn-secondary">Recherche de joueur</button>
             <button class="btn btn-secondary">Créer</button>
-            <button class="btn btn-secondary">Rejoindre</button>
+            <button class={`btn btn-secondary 
+                            ${inputValue().length === 12 ? '' : 'bg-gray-400 cursor-not-allowed'}`} disabled={inputValue().length !== 12}>
+              Rejoindre
+            </button>
             <div class="flex flex-col items-center">
-              <input type="text" placeholder="Code" class="input input-bordered input-secondary w-2/3  max-w-xs" />
+              <input type="text" placeholder="Code" 
+                     class="input input-bordered input-secondary w-2/3 max-w-xs 
+                          text-black" maxlength="12" 
+                      onInput={(e) => setInputValue(e.target.value)}/>
             </div>
+          </div>
+        </div>
+      </div>
+      {/* ====================== Contre l'IA =========================== */}
+      <div class="dropdown">
+        <label tabindex="1" class="btn btn-neutral m-1">Partie contre l'IA</label>
+        <div tabindex="1" class="dropdown-content z-[1] card card-compact w-64 p-2 shadow bg-primary text-primary-content">
+          <div class="card-body">
+            <button class="btn btn-secondary">Facile</button>
+            <button class="btn btn-secondary">Moyen</button>
+            <button class="btn btn-secondary">Difficile</button>
+            <button class="btn btn-secondary">Très Difficile</button>
           </div>
         </div>
       </div>
