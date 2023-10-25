@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { Show, createSignal } from "solid-js";
 import { PageEnum, gameLanguage, setActualPage } from "../App";
 import {
   chooseDifficulty,
@@ -26,44 +26,58 @@ export const [aiDifficultyLevel, setAiDifficultyLevel] = createSignal(
 export default function () {
 
   const [inputValue, setInputValue] = createSignal("");
-
+  const lengthCode = 12;
+  const [showContentLigne, setShowContentLigne] = createSignal(false);
+  const [showContentIA, setShowContentIA] = createSignal(false);
 
   return (
     <>
-    <div>
+    <div class="flex flex-col md:flex-row justify-between w-full">
       {/* ====================== Local =========================== */}
-      <button class="btn btn-neutral m-1">Partie local</button>
+      <div>
+		  <button class="btn btn-neutral m-1 w-64"> Partie local </button>
+	    </div>
       {/* ====================== En Ligne =========================== */}
-      <div class="dropdown">
-        <label tabindex="0" class="btn btn-neutral m-1">Partie en ligne</label>
-        <div tabindex="0" class="dropdown-content z-[1] card card-compact w-64 p-2 shadow bg-primary text-primary-content">
-          <div class="card-body">
-            <button class="btn btn-secondary">Recherche de joueur</button>
-            <button class="btn btn-secondary">Créer</button>
-            <button class={`btn btn-secondary 
-                            ${inputValue().length === 12 ? '' : 'bg-gray-400 cursor-not-allowed'}`} disabled={inputValue().length !== 12}>
+	    <div>
+		  <button class="btn btn-neutral m-1 w-64"
+              onClick={() => setShowContentLigne(!showContentLigne())}>
+                Partie en ligne
+      </button>
+      <Show when={showContentLigne()}> 
+		  <div class="card card-compact w-64 p-2 shadow bg-primary text-primary-content">
+			  <div class="card-body">
+          <button class="btn btn-secondary">Recherche de joueur</button>
+				  <button class="btn btn-secondary">Créer</button>
+          <button class={`btn btn-secondary 
+                            ${inputValue().length === lengthCode ? '' : 'bg-gray-400 cursor-not-allowed'}`} disabled={inputValue().length !== lengthCode}>
               Rejoindre
-            </button>
-            <div class="flex flex-col items-center">
-              <input type="text" placeholder="Code" 
-                     class="input input-bordered input-secondary w-2/3 max-w-xs 
-                          text-black" maxlength="12" 
-                      onInput={(e) => setInputValue(e.target.value)}/>
+          </button>
+          <div class="flex justify-center">
+            <input type="text" placeholder="Code" 
+                  class="input input-bordered input-secondary w-2/3 
+                       text-black" maxlength={lengthCode}
+                  onInput={(e) => setInputValue(e.target.value)}/>
+          </div>
+			  </div>
+		  </div>
+      </Show>
+	    </div>
+      {/* ====================== Contre l'IA =========================== */}
+      <div>
+        <button class="btn btn-neutral m-1 w-64"
+                onClick={() => setShowContentIA(!showContentIA())}>
+                  Partie contre l'IA
+        </button>
+        <Show when={showContentIA()}>
+          <div class="card card-compact w-64 p-2 shadow bg-primary text-primary-content">
+			      <div class="card-body">
+              <button class="btn btn-secondary">Facile</button>
+              <button class="btn btn-secondary">Moyen</button>
+              <button class="btn btn-secondary">Difficile</button>
+              <button class="btn btn-secondary">Très Difficile</button>
             </div>
           </div>
-        </div>
-      </div>
-      {/* ====================== Contre l'IA =========================== */}
-      <div class="dropdown">
-        <label tabindex="1" class="btn btn-neutral m-1">Partie contre l'IA</label>
-        <div tabindex="1" class="dropdown-content z-[1] card card-compact w-64 p-2 shadow bg-primary text-primary-content">
-          <div class="card-body">
-            <button class="btn btn-secondary">Facile</button>
-            <button class="btn btn-secondary">Moyen</button>
-            <button class="btn btn-secondary">Difficile</button>
-            <button class="btn btn-secondary">Très Difficile</button>
-          </div>
-        </div>
+        </Show>
       </div>
     </div>
     </>
