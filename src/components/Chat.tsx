@@ -44,9 +44,18 @@ type ChatProps = {
 
 const [isChatVisible, setIsChatVisible] = createSignal<boolean>(false);
 
+// Faire défiler automatiquement vers le bas pour voir le nouveau message
+const updateScrollTop = () => {
+  const chatDiv = document.getElementById("chat");
+  if (chatDiv != null) {
+    chatDiv.scrollTop = chatDiv.scrollHeight;
+  }
+};
+
 // Affiche ou masque le chat
 export const toggleChat = () => {
   setIsChatVisible(!isChatVisible()); // Utilisez isDivVisible() pour lire la valeur sans l'appeler comme une fonction
+  updateScrollTop();
 };
 
 // Affiche le nombre de message entre chaque input ou action button
@@ -75,17 +84,8 @@ function Chat(props: ChatProps) {
         input.value = "";
 
         // Faire défiler automatiquement vers le bas pour voir le nouveau message
-        // chatDiv.scrollTop = chatDiv.scrollHeight; // TODO: Fix
         updateScrollTop();
       }
-    }
-  };
-
-  // Faire défiler automatiquement vers le bas pour voir le nouveau message
-  const updateScrollTop = () => {
-    const chatDiv = document.getElementById("chat");
-    if (chatDiv != null) {
-      chatDiv.scrollTop = chatDiv.scrollHeight;
     }
   };
 
@@ -101,6 +101,7 @@ function Chat(props: ChatProps) {
     if (!isChatVisible()) {
       setUnreadMessagesNumber((prev) => prev + 1);
     }
+    updateScrollTop();
   });
 
   createEffect(() => {
