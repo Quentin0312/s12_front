@@ -52,8 +52,8 @@ export default function () {
 
   return (
     <>
-    <div class="flex flex-col justify-center items-center w-full 
-                md:flex-row md:justify-around md:items-start">
+    <div class="flex flex-col justify-center items-center space-y-1 w-full 
+                md:flex-row md:justify-around md:items-start md:space-x-5 md:space-y-0">
       {/* ====================== Local =========================== */}
       <div>
 		  <button class="btn btn-neutral m-1 w-64"> Partie local </button>
