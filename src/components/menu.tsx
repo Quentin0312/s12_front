@@ -1,4 +1,4 @@
-import { Show, createSignal } from "solid-js";
+import { Show, createSignal, onCleanup, onMount } from "solid-js";
 import { PageEnum, gameLanguage, setActualPage } from "../App";
 import {
   chooseDifficulty,
@@ -30,10 +30,30 @@ export default function () {
   const [showContentLigne, setShowContentLigne] = createSignal(false);
   const [showContentIA, setShowContentIA] = createSignal(false);
 
+  const updateShowContentIA = () => {
+    if (window.innerWidth >= 768) { // Taille d'écran pour md: selon Tailwind CSS
+      setShowContentIA(true);
+      setShowContentLigne(true);
+    } else {
+      setShowContentIA(false);
+      setShowContentLigne(false);
+    }
+  };
+  
+  window.addEventListener('resize', updateShowContentIA);
+
+  onMount(() => {
+    updateShowContentIA()
+  });
+
+  onCleanup(() => {
+    window.removeEventListener('resize', updateShowContentIA);
+  });
+
   return (
     <>
     <div class="flex flex-col justify-center items-center w-full 
-                md:flex-row md:justify-around">
+                md:flex-row md:justify-around md:items-start">
       {/* ====================== Local =========================== */}
       <div>
 		  <button class="btn btn-neutral m-1 w-64"> Partie local </button>
