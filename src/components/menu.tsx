@@ -32,7 +32,8 @@ export default function () {
 
   return (
     <>
-    <div class="flex flex-col md:flex-row justify-between w-full">
+    <div class="flex flex-col justify-center items-center w-full 
+                md:flex-row md:justify-around">
       {/* ====================== Local =========================== */}
       <div>
 		  <button class="btn btn-neutral m-1 w-64"> Partie local </button>
