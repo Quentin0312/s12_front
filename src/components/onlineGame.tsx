@@ -5,6 +5,7 @@ import GameContext, {
   PieceEnum,
   gameStep,
   setGameStep,
+  setOnlineGameWinner,
   switchTurn,
   turn,
 } from "./gameContext";
@@ -28,12 +29,17 @@ type WinningRequestType = {
   result: GameStepEnum;
   board: boardStateDictType;
   winningPieces?: WinningPiecesType;
+  winner: PieceEnum;
 };
 
 type TimerInfos = {
   currentTime: string;
   playerPiece: string;
-}
+};
+
+// ! ------------------CAREFUL-----------------
+// In this file socket.on don't used
+// ! ------------------CAREFUL-----------------
 
 export default function () {
   setGameStep(GameStepEnum.waiting);
@@ -46,8 +52,8 @@ export default function () {
   // TODO: if socket.active est false donc GamestepEnum.bug à mettre en place
   // et ses conséquences et actions
 
-   const [timerRed, setTimerRed] = createSignal("0:00");
-   const [timerYellow, setTimerYellow] = createSignal("0:00");
+  const [timerRed, setTimerRed] = createSignal("0:00");
+  const [timerYellow, setTimerYellow] = createSignal("0:00");
 
   // player color
   socket.on("player color", (req: PieceEnum.red | PieceEnum.yellow) => {
@@ -81,6 +87,8 @@ export default function () {
     setBoardState(req);
   });
   socket.on("game result", (req: WinningRequestType) => {
+    console.log("req.winner", req.winner);
+    setOnlineGameWinner(req.winner);
     setBoardState(req.board);
     if (req.winningPieces) {
       setWinningPieces(req.winningPieces);
@@ -90,8 +98,10 @@ export default function () {
   });
 
   socket.on("timer", (req: TimerInfos) => {
-    req.playerPiece == PieceEnum.red ? setTimerRed(req.currentTime) : setTimerYellow(req.currentTime)
-  })
+    req.playerPiece == PieceEnum.red
+      ? setTimerRed(req.currentTime)
+      : setTimerYellow(req.currentTime);
+  });
 
   onCleanup(() => {
     // TODO: Check if working properly
@@ -103,16 +113,16 @@ export default function () {
 
   return (
     <>
-    <GameContext>
-      <PlayerTurn turn={turn()} gameStep={gameStep()} />
-      <Board />
-    </GameContext>
-    <div>
-      <p> Rouge </p> 
-      <p id = "timerDisplayRed"> {timerRed()} </p> 
-      <p> Jaune </p> 
-      <p id = "timerDisplayYellow"> {timerYellow()} </p> 
-    </div>
+      <GameContext>
+        <PlayerTurn turn={turn()} gameStep={gameStep()} />
+        <Board />
+      </GameContext>
+      <div>
+        <p> Rouge </p>
+        <p id="timerDisplayRed"> {timerRed()} </p>
+        <p> Jaune </p>
+        <p id="timerDisplayYellow"> {timerYellow()} </p>
+      </div>
     </>
   );
 }

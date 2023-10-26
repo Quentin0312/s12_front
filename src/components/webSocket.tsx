@@ -5,6 +5,7 @@ import {
   GameStepEnum,
   PieceEnum,
   setGameStep,
+  setOnlineGameWinner,
   switchTurn,
 } from "./gameContext";
 import {
@@ -31,6 +32,7 @@ type WinningRequestType = {
   result: GameStepEnum;
   board: boardStateDictType;
   winningPieces?: WinningPiecesType;
+  winner: PieceEnum;
 };
 
 export default function (props: { socket: Socket }) {
@@ -60,6 +62,8 @@ export default function (props: { socket: Socket }) {
     setBoardState(req);
   });
   props.socket.on("game result", (req: WinningRequestType) => {
+    console.log("req.winner", req.winner);
+    setOnlineGameWinner(req.winner);
     setBoardState(req.board);
     if (req.winningPieces) {
       setWinningPieces(req.winningPieces);

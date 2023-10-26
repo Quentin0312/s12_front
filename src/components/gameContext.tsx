@@ -27,6 +27,8 @@ export enum GameStepEnum {
 export const [turn, setTurn] = createSignal(PieceEnum.red);
 export const [gameStep, setGameStep] = createSignal(GameStepEnum.playing);
 export const [messageToDisplay, setMessageToDisplay] = createSignal<string>();
+export const [onlineGameWinner, setOnlineGameWinner] =
+  createSignal<PieceEnum>();
 
 // ! Delete ? and use the board.turn instead ?
 export function switchTurn() {
@@ -44,7 +46,7 @@ export default function (props: { children: JSXElement }) {
       // TODO: Fix this case
       case GameStepEnum.win:
         setMessageToDisplay(
-          turn() == PieceEnum.red
+          onlineGameWinner() == PieceEnum.red
             ? redWinMessage[gameLanguage]
             : yellowWinMessage[gameLanguage]
         );
