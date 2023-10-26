@@ -13,6 +13,7 @@ import { setPlayerMove } from "./boardItem";
 import PlayerTurn from "./playerTurn";
 import WebSocket from "./webSocket";
 import Chat from "./Chat";
+import { setPrivateGameCode, setPrivateGameMode } from "./menu";
 
 // TODO: Move cause also use in iaGame
 // TODO En faire un Signal dérivé ?
@@ -37,6 +38,8 @@ export default function () {
   onCleanup(() => {
     // TODO: Check if working properly
     setBoardState(getInitialBoard());
+    setPrivateGameCode();
+    setPrivateGameMode(false);
     setPlayerMove();
     setPlayerPieceColor();
     setTimerRed("0:00");

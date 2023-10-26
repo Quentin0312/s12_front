@@ -21,6 +21,7 @@ import {
   setBoardState,
   setWinningPieces,
 } from "./board";
+import { privateGameCode, privateGameMode, setPrivateGameCode } from "./menu";
 
 type TimerInfos = {
   currentTime: string;
@@ -37,19 +38,27 @@ type WinningRequestType = {
 
 export default function (props: { socket: Socket }) {
   // -------------PLAYING-----------------
-  props.socket.on("player color", (req: PieceEnum.red | PieceEnum.yellow) => {
-    console.log(req);
-    setPlayerPieceColor(req == "red" ? PieceEnum.red : PieceEnum.yellow);
-    if (req == "yellow") {
-      // setGameStep(GameStepEnum.waiting)
-      props.socket.on("opponent ready", () => {
+  props.socket.on(
+    "player color",
+    (req: { color: PieceEnum.red | PieceEnum.yellow; code: string }) => {
+      setPlayerPieceColor(
+        req.color == "red" ? PieceEnum.red : PieceEnum.yellow
+      );
+      if (privateGameMode()) {
+        setPrivateGameCode(req.code);
+        console.log("code => ", req.code);
+      }
+      if (req.color == "yellow") {
+        // setGameStep(GameStepEnum.waiting)
+        props.socket.on("opponent ready", () => {
+          setGameStep(GameStepEnum.playing);
+        });
+      } else {
         setGameStep(GameStepEnum.playing);
-      });
-    } else {
-      setGameStep(GameStepEnum.playing);
-      console.log("red so opponent is already ready");
+        console.log("red so opponent is already ready");
+      }
     }
-  });
+  );
 
   createEffect(() => {
     const move = playerMove();
@@ -83,6 +92,13 @@ export default function (props: { socket: Socket }) {
   props.socket.on("disconnection order", () => {
     setGameStep(GameStepEnum.opponentLeft);
     props.socket.disconnect();
+  });
+
+  props.socket.on("is game private", () => {
+    props.socket.emit("game is private", {
+      isPrivate: privateGameMode(),
+      code: privateGameCode(),
+    });
   });
 
   onCleanup(() => props.socket.disconnect());
