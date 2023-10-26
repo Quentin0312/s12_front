@@ -10,7 +10,9 @@ import {
   medium,
   veryHard,
 } from "../languageDict";
+
 import MenuButton from "./menuButton";
+import SubMenuButton from "./subMenuButtons";
 
 export enum DifficultyLevelEnum {
   easy = 2,
@@ -30,7 +32,7 @@ export default function () {
   const [showContentLigne, setShowContentLigne] = createSignal(false);
   const [showContentIA, setShowContentIA] = createSignal(false);
 
-  const updateShowContentIA = () => {
+  const updateShowContent = () => {
     if (window.innerWidth >= 768) { // Taille d'écran pour md: selon Tailwind CSS
       setShowContentIA(true);
       setShowContentLigne(true);
@@ -40,14 +42,14 @@ export default function () {
     }
   };
   
-  window.addEventListener('resize', updateShowContentIA);
+  window.addEventListener('resize', updateShowContent);
 
   onMount(() => {
-    updateShowContentIA()
+    updateShowContent()
   });
 
   onCleanup(() => {
-    window.removeEventListener('resize', updateShowContentIA);
+    window.removeEventListener('resize', updateShowContent);
   });
 
   return (
@@ -56,46 +58,76 @@ export default function () {
                 md:flex-row md:justify-around md:items-start md:space-x-5 md:space-y-0">
       {/* ====================== Local =========================== */}
       <div>
-		  <button class="btn btn-neutral m-1 w-64"> Partie local </button>
+		    {/* <button class="btn btn-neutral m-1 w-64"> Partie local </button> */}
+        <MenuButton
+          title={gameModeLocal[gameLanguage]}
+          onClick={() => setActualPage(PageEnum.local)}
+        />
 	    </div>
       {/* ====================== En Ligne =========================== */}
 	    <div>
-		  <button class="btn btn-neutral m-1 w-64"
-              onClick={() => setShowContentLigne(!showContentLigne())}>
-                Partie en ligne
-      </button>
-      <Show when={showContentLigne()}> 
-		  <div class="card card-compact w-64 p-2 shadow bg-primary text-primary-content">
-			  <div class="card-body">
-          <button class="btn btn-secondary">Recherche de joueur</button>
-				  <button class="btn btn-secondary">Créer</button>
-          <button class={`btn btn-secondary 
-                            ${inputValue().length === lengthCode ? '' : 'bg-gray-400 cursor-not-allowed'}`} disabled={inputValue().length !== lengthCode}>
-              Rejoindre
-          </button>
-          <div class="flex justify-center">
-            <input type="text" placeholder="Code" 
-                  class="input input-bordered input-secondary w-2/3 
-                       text-black" maxlength={lengthCode}
-                  onInput={(e) => setInputValue(e.target.value)}/>
+        <MenuButton
+            title={gameModeOnline[gameLanguage]}
+            onClick={() => setShowContentLigne(!showContentLigne())}
+        />
+        <Show when={showContentLigne()}> 
+        <div class="card card-compact w-64 p-2 shadow bg-primary text-primary-content">
+          <div class="card-body">
+            <SubMenuButton title="Recherche d'un joueur" onClick={() => setActualPage(PageEnum.online)} /> 
+            <SubMenuButton title="Créer" onClick={() => null} />
+            <button class={`btn btn-secondary 
+                              ${inputValue().length === lengthCode ? '' : 'bg-gray-400 cursor-not-allowed'}`} disabled={inputValue().length !== lengthCode}
+                    onClick={() => null}
+            >
+                Rejoindre
+            </button>
+            <div class="flex justify-center">
+              <input type="text" placeholder="Code" 
+                    class="input input-bordered input-secondary w-2/3 
+                        text-black" maxlength={lengthCode}
+                    onInput={(e) => setInputValue(e.target.value)}/>
+            </div>
           </div>
-			  </div>
-		  </div>
-      </Show>
+        </div>
+        </Show>
 	    </div>
       {/* ====================== Contre l'IA =========================== */}
       <div>
-        <button class="btn btn-neutral m-1 w-64"
-                onClick={() => setShowContentIA(!showContentIA())}>
-                  Partie contre l'IA
-        </button>
+        <MenuButton 
+          title={gameModeIA[gameLanguage]} 
+          onClick={() => setShowContentIA(!showContentIA())}
+        />
         <Show when={showContentIA()}>
           <div class="card card-compact w-64 p-2 shadow bg-primary text-primary-content">
 			      <div class="card-body">
-              <button class="btn btn-secondary">Facile</button>
-              <button class="btn btn-secondary">Moyen</button>
-              <button class="btn btn-secondary">Difficile</button>
-              <button class="btn btn-secondary">Très Difficile</button>
+              <SubMenuButton 
+                title={easy[gameLanguage]}
+                onClick={() => {
+                  setAiDifficultyLevel(DifficultyLevelEnum.easy)
+                  setActualPage(PageEnum.ia)
+                }}  
+              /> 
+              <SubMenuButton 
+                title={medium[gameLanguage]}
+                onClick={() => {
+                  setAiDifficultyLevel(DifficultyLevelEnum.medium)
+                  setActualPage(PageEnum.ia)
+                }}  
+              /> 
+              <SubMenuButton 
+                title={hard[gameLanguage]}
+                onClick={() => {
+                  setAiDifficultyLevel(DifficultyLevelEnum.hard)
+                  setActualPage(PageEnum.ia)
+                }}  
+              /> 
+              <SubMenuButton 
+                title={veryHard[gameLanguage]}
+                onClick={() => {
+                  setAiDifficultyLevel(DifficultyLevelEnum.veryHard)
+                  setActualPage(PageEnum.ia)
+                }}  
+              /> 
             </div>
           </div>
         </Show>
