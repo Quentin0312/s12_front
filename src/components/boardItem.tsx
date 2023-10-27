@@ -1,7 +1,7 @@
 import { createEffect, createSignal } from "solid-js";
 
 import { PieceEnum, turn } from "./gameContext";
-import { PiecePosType, boardState, rows, winningPieces } from "./board";
+import { PiecePosType, rows, boardState, winningPieces, posLastPiece} from "./board";
 
 import { playerPieceColor } from "./onlineGameBis";
 
@@ -48,9 +48,14 @@ function onClickOnline(row: number, column: number) {
 export default function (props: BoardItemProps) {
   const [fillColor, setFillColor] = createSignal<PieceEnum>(PieceEnum.empty);
   const [isBlinking, setIsBlinking] = createSignal(false);
+  // const [highlightingPiece, setHighlightingPiece] = createSignal(false)
 
   createEffect(() => {
     setFillColor(boardState()[props.row][props.column]);
+    if(props.row == posLastPiece().row && props.column == posLastPiece().column){
+      //setHighlightingPiece(true)
+      setIsBlinking(true)
+    } else setIsBlinking(false)//setHighlightingPiece(false)
   });
 
   createEffect(() => {
