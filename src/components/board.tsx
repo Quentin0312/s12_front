@@ -32,6 +32,8 @@ export const [boardState, setBoardState] = createSignal<boardStateDictType>(
   getInitialBoard()
 );
 
+export const [posLastPiece, setPosLastPiece] = createSignal<PiecePosType>({row: -1, column: -1})
+
 export const [winningPieces, setWinningPieces] =
   createSignal<WinningPiecesType>([]);
 
@@ -41,6 +43,19 @@ export function updateBoard(row: number, column: number) {
     newDict[row][column] = turn();
     return newDict;
   });
+}
+
+/** Compare le plateau avant et après qu'un joueur est placé sa pièce pour 
+ * récupèrer la position de celle-ci. */
+export function compareBoards(oldBoard: boardStateDictType, 
+                              newBoard: boardStateDictType) {
+  for(let i = 0; i < rows.length; i++) {
+    for(let j = 0; j < columns.length; j++) {
+      if(oldBoard[i][j] !== newBoard[i][j]) {
+        return {row: i, column: j};
+      }
+    }
+  }
 }
 
 export default function () {
