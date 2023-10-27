@@ -9,6 +9,7 @@ import {
   switchTurn,
 } from "./gameContext";
 import {
+  playerPieceColor,
   setPlayerPieceColor,
   setTimerRed,
   setTimerYellow,
@@ -20,6 +21,10 @@ import {
   boardStateDictType,
   setBoardState,
   setWinningPieces,
+  compareBoards,
+  boardState,
+  posLastPiece,
+  setPosLastPiece
 } from "./board";
 import { privateGameCode, privateGameMode, setPrivateGameCode } from "./menu";
 import { PageEnum, setActualPage } from "../App";
@@ -71,7 +76,19 @@ export default function (props: { socket: Socket }) {
 
   props.socket.on("moved", (req: boardStateDictType) => {
     switchTurn();
+    const res = compareBoards(boardState(), req) // récupère la position de la dernière pièce joué 
+                                                 // (quelque soit le joueur)
     setBoardState(req);
+    // Enregistre la position de la pièce adverse en fonction du joueur 
+    if(res != undefined){
+      if(playerPieceColor() == PieceEnum.red && boardState()[res.row][res.column] == PieceEnum.yellow){
+      setPosLastPiece({row: res.row, column: res.column})
+      } 
+      if(playerPieceColor() == PieceEnum.yellow && boardState()[res.row][res.column] == PieceEnum.red){
+        setPosLastPiece({row: res.row, column: res.column})
+      } 
+    }
+
   });
   props.socket.on("game result", (req: WinningRequestType) => {
     console.log("req.winner", req.winner);
