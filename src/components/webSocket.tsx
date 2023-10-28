@@ -81,12 +81,13 @@ export default function (props: { socket: Socket }) {
     setBoardState(req);
     // Enregistre la position de la pièce adverse en fonction du joueur 
     if(res != undefined){
-      if(playerPieceColor() == PieceEnum.red && boardState()[res.row][res.column] == PieceEnum.yellow){
       setPosLastPiece({row: res.row, column: res.column})
-      } 
-      if(playerPieceColor() == PieceEnum.yellow && boardState()[res.row][res.column] == PieceEnum.red){
-        setPosLastPiece({row: res.row, column: res.column})
-      } 
+      // if(playerPieceColor() == PieceEnum.red && boardState()[res.row][res.column] == PieceEnum.yellow){
+      // setPosLastPiece({row: res.row, column: res.column})
+      // } 
+      // if(playerPieceColor() == PieceEnum.yellow && boardState()[res.row][res.column] == PieceEnum.red){
+      //   setPosLastPiece({row: res.row, column: res.column})
+      // } 
     }
 
   });
