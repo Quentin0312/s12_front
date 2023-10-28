@@ -24,7 +24,7 @@ import {
   compareBoards,
   boardState,
   posLastPiece,
-  setPosLastPiece
+  setPosLastPiece,
 } from "./board";
 import { privateGameCode, privateGameMode, setPrivateGameCode } from "./menu";
 import { PageEnum, setActualPage } from "../App";
@@ -45,6 +45,12 @@ type WinningRequestType = {
 export const [codeIsCorrect, setCodeIsCorrect] = createSignal(true);
 
 export default function (props: { socket: Socket }) {
+  const data = {
+    isPrivate: privateGameMode(),
+    code: privateGameCode(),
+  };
+  console.log("data", data);
+  props.socket.emit("game is private", data);
   // -------------PLAYING-----------------
   props.socket.on(
     "player color",
@@ -76,20 +82,19 @@ export default function (props: { socket: Socket }) {
 
   props.socket.on("moved", (req: boardStateDictType) => {
     switchTurn();
-    const res = compareBoards(boardState(), req) // récupère la position de la dernière pièce joué 
-                                                 // (quelque soit le joueur)
+    const res = compareBoards(boardState(), req); // récupère la position de la dernière pièce joué
+    // (quelque soit le joueur)
     setBoardState(req);
-    // Enregistre la position de la pièce adverse en fonction du joueur 
-    if(res != undefined){
-      setPosLastPiece({row: res.row, column: res.column})
+    // Enregistre la position de la pièce adverse en fonction du joueur
+    if (res != undefined) {
+      setPosLastPiece({ row: res.row, column: res.column });
       // if(playerPieceColor() == PieceEnum.red && boardState()[res.row][res.column] == PieceEnum.yellow){
       // setPosLastPiece({row: res.row, column: res.column})
-      // } 
+      // }
       // if(playerPieceColor() == PieceEnum.yellow && boardState()[res.row][res.column] == PieceEnum.red){
       //   setPosLastPiece({row: res.row, column: res.column})
-      // } 
+      // }
     }
-
   });
   props.socket.on("game result", (req: WinningRequestType) => {
     console.log("req.winner", req.winner);
@@ -113,13 +118,6 @@ export default function (props: { socket: Socket }) {
   props.socket.on("disconnection order", () => {
     setGameStep(GameStepEnum.opponentLeft);
     props.socket.disconnect();
-  });
-
-  props.socket.on("is game private", () => {
-    props.socket.emit("game is private", {
-      isPrivate: privateGameMode(),
-      code: privateGameCode(),
-    });
   });
 
   // props.socket.on("incorrect code", () => {

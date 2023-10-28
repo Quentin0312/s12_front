@@ -1,4 +1,5 @@
 import { Show, createSignal, onCleanup, onMount } from "solid-js";
+import { io } from "socket.io-client";
 import { PageEnum, gameLanguage, setActualPage } from "../App";
 import {
   chooseDifficulty,
@@ -87,6 +88,7 @@ export default function () {
                 <SubMenuButton
                   title={privateGame[gameLanguage()]}
                   onClick={() => {
+                    setPrivateGameCode();
                     setPrivateGameMode(true);
                     setActualPage(PageEnum.online);
                   }}
@@ -102,7 +104,18 @@ export default function () {
                   onClick={() => {
                     setPrivateGameMode(true);
                     setPrivateGameCode(inputValue());
-                    setActualPage(PageEnum.online);
+                    const codeCheckSocket = io(
+                      import.meta.env.DEV
+                        ? "http://localhost:8000"
+                        : "https://s12-back-bf7d3c384d86.herokuapp.com/"
+                    );
+                    codeCheckSocket.emit("is code correct", privateGameCode());
+                    codeCheckSocket.on("code is correct", (req: boolean) => {
+                      codeCheckSocket.disconnect();
+                      req
+                        ? setActualPage(PageEnum.online)
+                        : console.log("incorrect code");
+                    });
                   }}
                 >
                   Rejoindre
