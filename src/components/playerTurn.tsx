@@ -19,13 +19,13 @@ export default function (props: { turn: PieceEnum; gameStep: GameStepEnum }) {
   const messageToDisplay = () => {
     switch (actualPage()) {
       case PageEnum.local:
-        if (props.turn == PieceEnum.red) return playerRedTurn[gameLanguage];
-        else return playerYellowTurn[gameLanguage];
+        if (props.turn == PieceEnum.red) return playerRedTurn[gameLanguage()];
+        else return playerYellowTurn[gameLanguage()];
 
       case PageEnum.online:
         if (props.turn == playerPieceColor())
-          return yourTurnMessageLanguageDictType[gameLanguage];
-        else return opponentTurnMessageLanguageDictType[gameLanguage];
+          return yourTurnMessageLanguageDictType[gameLanguage()];
+        else return opponentTurnMessageLanguageDictType[gameLanguage()];
 
       default:
         console.log("switch case error; messageToDisplay()");

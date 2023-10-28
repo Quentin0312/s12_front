@@ -41,24 +41,24 @@ export default function (props: { children: JSXElement }) {
   createEffect(() => {
     switch (gameStep()) {
       case GameStepEnum.draw:
-        setMessageToDisplay(drawMessage[gameLanguage]);
+        setMessageToDisplay(drawMessage[gameLanguage()]);
         break;
       // TODO: Fix this case
       case GameStepEnum.win:
         setMessageToDisplay(
           onlineGameWinner() == PieceEnum.red
-            ? redWinMessage[gameLanguage]
-            : yellowWinMessage[gameLanguage]
+            ? redWinMessage[gameLanguage()]
+            : yellowWinMessage[gameLanguage()]
         );
         break;
       case GameStepEnum.playing:
         setMessageToDisplay();
         break;
       case GameStepEnum.opponentLeft:
-        setMessageToDisplay(opponentLeftMessage[gameLanguage]);
+        setMessageToDisplay(opponentLeftMessage[gameLanguage()]);
         break;
       case GameStepEnum.waiting:
-        setMessageToDisplay(waitingPLayer[gameLanguage]);
+        setMessageToDisplay(waitingPLayer[gameLanguage()]);
         break;
       default:
         console.log("gameStep() case error");

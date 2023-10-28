@@ -8,6 +8,8 @@ import {
   gameModeOnline,
   hard,
   medium,
+  privateGame,
+  randomOpponent,
   veryHard,
 } from "../languageDict";
 
@@ -65,25 +67,25 @@ export default function () {
         <div>
           {/* <button class="btn btn-neutral m-1 w-64"> Partie local </button> */}
           <MenuButton
-            title={gameModeLocal[gameLanguage]}
+            title={gameModeLocal[gameLanguage()]}
             onClick={() => setActualPage(PageEnum.local)}
           />
         </div>
         {/* ====================== En Ligne =========================== */}
         <div>
           <MenuButton
-            title={gameModeOnline[gameLanguage]}
+            title={gameModeOnline[gameLanguage()]}
             onClick={() => setShowContentLigne(!showContentLigne())}
           />
           <Show when={showContentLigne()}>
             <div class="card card-compact w-64 p-2 shadow bg-primary text-primary-content">
               <div class="card-body">
                 <SubMenuButton
-                  title="Recherche d'un joueur"
+                  title={randomOpponent[gameLanguage()]}
                   onClick={() => setActualPage(PageEnum.online)}
                 />
                 <SubMenuButton
-                  title="Créer"
+                  title={privateGame[gameLanguage()]}
                   onClick={() => {
                     setPrivateGameMode(true);
                     setActualPage(PageEnum.online);
@@ -122,35 +124,35 @@ export default function () {
         {/* ====================== Contre l'IA =========================== */}
         <div>
           <MenuButton
-            title={gameModeIA[gameLanguage]}
+            title={gameModeIA[gameLanguage()]}
             onClick={() => setShowContentIA(!showContentIA())}
           />
           <Show when={showContentIA()}>
             <div class="card card-compact w-64 p-2 shadow bg-primary text-primary-content">
               <div class="card-body">
                 <SubMenuButton
-                  title={easy[gameLanguage]}
+                  title={easy[gameLanguage()]}
                   onClick={() => {
                     setAiDifficultyLevel(DifficultyLevelEnum.easy);
                     setActualPage(PageEnum.ia);
                   }}
                 />
                 <SubMenuButton
-                  title={medium[gameLanguage]}
+                  title={medium[gameLanguage()]}
                   onClick={() => {
                     setAiDifficultyLevel(DifficultyLevelEnum.medium);
                     setActualPage(PageEnum.ia);
                   }}
                 />
                 <SubMenuButton
-                  title={hard[gameLanguage]}
+                  title={hard[gameLanguage()]}
                   onClick={() => {
                     setAiDifficultyLevel(DifficultyLevelEnum.hard);
                     setActualPage(PageEnum.ia);
                   }}
                 />
                 <SubMenuButton
-                  title={veryHard[gameLanguage]}
+                  title={veryHard[gameLanguage()]}
                   onClick={() => {
                     setAiDifficultyLevel(DifficultyLevelEnum.veryHard);
                     setActualPage(PageEnum.ia);

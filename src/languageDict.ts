@@ -123,3 +123,18 @@ export const difficultyLevel: LanguageDictType = {
   french: "Niveau de difficulté :",
   english: "Difficulty level :",
 };
+
+export const randomOpponent: LanguageDictType = {
+  french: "Adversaire aléatoire",
+  english: "Random opponent",
+};
+
+export const privateGame: LanguageDictType = {
+  french: "Créer une partie privée",
+  english: "Create private game",
+};
+
+export const joinPrivateGame: LanguageDictType = {
+  french: "Rejoindre",
+  english: "Join",
+};

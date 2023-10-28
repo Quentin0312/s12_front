@@ -27,12 +27,12 @@ export function gameStep(): GameStepEnum {
 export function messageToDisplay(): string | undefined {
   switch (gameStep()) {
     case GameStepEnum.draw:
-      return drawMessage[gameLanguage];
+      return drawMessage[gameLanguage()];
 
     case GameStepEnum.win:
       return turn() == PieceEnum.red
-        ? redWinMessage[gameLanguage]
-        : yellowWinMessage[gameLanguage];
+        ? redWinMessage[gameLanguage()]
+        : yellowWinMessage[gameLanguage()];
 
     case GameStepEnum.playing:
       return;

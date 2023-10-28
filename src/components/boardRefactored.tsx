@@ -14,17 +14,17 @@ export default function () {
   onCleanup(() => setBoardState(new Board()));
 
   function levelToDisplay() {
-    const message = difficultyLevel[gameLanguage];
+    const message = difficultyLevel[gameLanguage()];
     if (actualPage() == PageEnum.ia) {
       switch (aiDifficultyLevel()) {
         case DifficultyLevelEnum.easy:
-          return message + easy[gameLanguage];
+          return message + easy[gameLanguage()];
         case DifficultyLevelEnum.medium:
-          return message + medium[gameLanguage];
+          return message + medium[gameLanguage()];
         case DifficultyLevelEnum.hard:
-          return message + hard[gameLanguage];
+          return message + hard[gameLanguage()];
         case DifficultyLevelEnum.veryHard:
-          return message + veryHard[gameLanguage];
+          return message + veryHard[gameLanguage()];
         default:
           return "";
       }

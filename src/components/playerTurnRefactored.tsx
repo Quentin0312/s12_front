@@ -18,11 +18,11 @@ export default function (props: { turn: PieceEnum; gameStep: GameStepEnum }) {
   const messageToDisplay = () =>
     actualPage() == PageEnum.local
       ? props.turn == PieceEnum.red
-        ? playerRedTurn[gameLanguage]
-        : playerYellowTurn[gameLanguage]
+        ? playerRedTurn[gameLanguage()]
+        : playerYellowTurn[gameLanguage()]
       : props.turn == playerPieceColor()
-      ? yourTurnMessageLanguageDictType[gameLanguage]
-      : opponentTurnMessageLanguageDictType[gameLanguage];
+      ? yourTurnMessageLanguageDictType[gameLanguage()]
+      : opponentTurnMessageLanguageDictType[gameLanguage()];
 
   return (
     <Show

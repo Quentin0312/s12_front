@@ -9,8 +9,6 @@ import { LanguageEnum } from "./languageDict";
 import OnlineGameBis from "./components/onlineGameBis";
 // TODO: Par default utiliser la langue du browser
 // TODO: The user should be able to change langage
-// TODO: Delete chinese troll language ?
-export const gameLanguage = LanguageEnum.fr;
 
 // TODO: Rename
 export enum PageEnum {
@@ -22,7 +20,9 @@ export enum PageEnum {
 
 // TODO: Rename
 export const [actualPage, setActualPage] = createSignal(PageEnum.menu);
-
+export const [gameLanguage, setGameLanguage] = createSignal<LanguageEnum>(
+  LanguageEnum.fr
+);
 // TODO: Rewrite
 export default function (): JSXElement {
   return (
