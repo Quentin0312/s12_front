@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
 
 import { PieceEnum, turn } from "./gameContext";
 import { PiecePosType, rows, boardState, winningPieces, posLastPiece} from "./board";
@@ -17,6 +17,12 @@ type BoardItemProps = {
 type PlayerMoveType = {
   row: number;
   column: number;
+};
+type DimBoard = {
+  r : number;
+  cy: number;
+  cx: number;
+  h : number;
 };
 
 export const [playerMove, setPlayerMove] = createSignal<PlayerMoveType>();
@@ -48,7 +54,9 @@ function onClickOnline(row: number, column: number) {
 export default function (props: BoardItemProps) {
   const [fillColor, setFillColor] = createSignal<PieceEnum>(PieceEnum.empty);
   const [isBlinking, setIsBlinking] = createSignal(false);
-  // const [highlightingPiece, setHighlightingPiece] = createSignal(false)
+  const [dimBoard, setDimBoard] = createSignal<DimBoard>({r: 40, cy: 50, cx:50,
+                                                             h: 100});
+
 
   createEffect(() => {
     setFillColor(boardState()[props.row][props.column]);
@@ -70,17 +78,31 @@ export default function (props: BoardItemProps) {
     }
   });
 
+  onMount(() => {
+    const handleResize = () => {
+      setDimBoard(window.innerWidth < 640 ? {r: 25, cy: 35, cx: 35, h: 70} : {r: 40, cy: 50, cx: 50, h: 100});
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    onCleanup(() => {
+      window.removeEventListener('resize', handleResize);
+    });
+  });
+
+
   return (
     <svg
-      height="100"
+      height={dimBoard().h}
       width="100"
       onClick={() => onClickOnline(props.row, props.column)}
     >
       <circle
         class={isBlinking() ? "blink" : ""}
-        cx="50"
-        cy="50"
-        r="40"
+        cx={dimBoard().cx}
+        cy={dimBoard().cy}
+        r={dimBoard().r}
         stroke="black"
         stroke-width="1"
         fill={fillColor()}
