@@ -14,6 +14,7 @@ import PlayerTurn from "./playerTurn";
 import WebSocket from "./webSocket";
 import Chat from "./Chat";
 import { setPrivateGameCode, setPrivateGameMode } from "./menu";
+import { PageEnum, setActualPage } from "../App";
 
 // TODO: Move cause also use in iaGame
 // TODO En faire un Signal dérivé ?
@@ -34,6 +35,10 @@ export default function () {
   );
   // TODO: if socket.active est false donc GamestepEnum.bug à mettre en place
   // ! et ses conséquences et actions
+
+  socket.on("incorrect code", () => {
+    setActualPage((prev) => (prev == PageEnum.online ? PageEnum.menu : prev));
+  });
 
   onCleanup(() => {
     // TODO: Check if working properly

@@ -1,6 +1,12 @@
 import { For, createSignal } from "solid-js";
 import BoardItem from "./boardItem";
-import { PieceEnum, turn } from "./gameContext";
+import { turn } from "./gameContext";
+
+enum PieceEnum {
+  red = "red",
+  yellow = "yellow",
+  empty = "white",
+}
 
 export type boardStateDictType = { [key: number]: PieceEnum[] };
 // TODO: Use PieceType[] instead and delete WinningPiecesType

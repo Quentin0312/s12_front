@@ -13,7 +13,7 @@ import {
   setTimerRed,
   setTimerYellow,
 } from "./onlineGameBis";
-import { createEffect, onCleanup } from "solid-js";
+import { createEffect, createSignal, onCleanup } from "solid-js";
 import { playerMove } from "./boardItem";
 import {
   WinningPiecesType,
@@ -22,6 +22,7 @@ import {
   setWinningPieces,
 } from "./board";
 import { privateGameCode, privateGameMode, setPrivateGameCode } from "./menu";
+import { PageEnum, setActualPage } from "../App";
 
 type TimerInfos = {
   currentTime: string;
@@ -35,6 +36,8 @@ type WinningRequestType = {
   winningPieces?: WinningPiecesType;
   winner: PieceEnum;
 };
+
+export const [codeIsCorrect, setCodeIsCorrect] = createSignal(true);
 
 export default function (props: { socket: Socket }) {
   // -------------PLAYING-----------------
@@ -100,6 +103,13 @@ export default function (props: { socket: Socket }) {
       code: privateGameCode(),
     });
   });
+
+  // props.socket.on("incorrect code", () => {
+  //   setActualPage((prev) => (prev == PageEnum.online ? PageEnum.menu : prev));
+  //   setCodeIsCorrect(false);
+  //   console.log("set to falzes => ", codeIsCorrect());
+  //   console.log("incorect code ");
+  // });
 
   onCleanup(() => props.socket.disconnect());
   return <></>;
