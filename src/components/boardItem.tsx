@@ -1,13 +1,14 @@
 import { createEffect, createSignal } from "solid-js";
 
-import { PieceEnum } from "./gameContext";
-import { boardState, winningPieces } from "./board";
+import { PieceEnum, turn } from "./gameContext";
+import { PiecePosType, boardState, rows, winningPieces } from "./board";
 
 import { playerPieceColor } from "./onlineGameBis";
 
 import { isMoveLegal } from "../utils/game.utils";
 
 import "./boardItem.css";
+import { PageEnum, actualPage } from "../App";
 
 type BoardItemProps = {
   row: number;
@@ -20,10 +21,28 @@ type PlayerMoveType = {
 
 export const [playerMove, setPlayerMove] = createSignal<PlayerMoveType>();
 
+function getMoveCoord(column: number): PiecePosType {
+  if (column > 6 || column < 0) return { row: -1, column: -1 };
+
+  for (const row of [...rows].reverse()) {
+    if (boardState()[row][column] == PieceEnum.empty) {
+      return { row, column };
+    }
+  }
+
+  return { row: -1, column };
+}
+
 function onClickOnline(row: number, column: number) {
-  // TODO: Change to be able to click on the whole column
-  if (!isMoveLegal(row, column, playerPieceColor() as PieceEnum)) return;
-  setPlayerMove({ row, column });
+  // Check if it's player's turn
+  if (actualPage() == PageEnum.online || actualPage() == PageEnum.ia) {
+    if (turn() != playerPieceColor()) return;
+  }
+
+  const _playerMove = getMoveCoord(column);
+  if (_playerMove.row == -1 || _playerMove.column == -1) return;
+
+  setPlayerMove(_playerMove);
 }
 
 export default function (props: BoardItemProps) {

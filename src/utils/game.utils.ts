@@ -22,6 +22,7 @@ export function checkNull() {
 }
 
 // TODO: Do something cleaner with playerPieceColor in case online or ia
+// ! No longer used in online game !
 export function isMoveLegal(
   row: number,
   column: number,
