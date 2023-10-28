@@ -8,7 +8,8 @@ export default function () {
     <div class="relative w-full h-36 z-header bg-white border border-t-2">
       <HeaderButton />
       <LangButton />
-      <h1 class="text-center font-extrabold text-[75px] select-none text-[#ff0000]">
+      <h1 class="text-center font-extrabold select-none text-[#ff0000] text-[55px] 
+                 md:text-[75px]">
         {gameTitle[gameLanguage()]}
       </h1>
     </div>
