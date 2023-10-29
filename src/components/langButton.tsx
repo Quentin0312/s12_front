@@ -10,7 +10,7 @@ function onClick() {
 export default function () {
   return (
     <div
-      class="absolute right-5  top-1/2 ml-2 cursor-pointer select-none"
+      class="absolute right-5 top-3/4 md:top-1/2 ml-2 cursor-pointer select-none"
       onClick={onClick}
     >
       {gameLanguage() == LanguageEnum.fr ? "ENG" : "FR"}
