@@ -8,6 +8,22 @@ enum PieceEnum {
   empty = "white",
 }
 
+type DimBoard = {
+  r: number;
+  cy: number;
+  cx: number;
+  h: number;
+  w: number;
+};
+
+export const [dimBoard, setDimBoard] = createSignal<DimBoard>({
+  r: 40,
+  cy: 50,
+  cx: 50,
+  h: 100,
+  w: 100,
+});
+
 export type boardStateDictType = { [key: number]: PieceEnum[] };
 // TODO: Use PieceType[] instead and delete WinningPiecesType
 export type WinningPiecesType = PiecePosType[];
@@ -32,7 +48,10 @@ export const [boardState, setBoardState] = createSignal<boardStateDictType>(
   getInitialBoard()
 );
 
-export const [posLastPiece, setPosLastPiece] = createSignal<PiecePosType>({row: -1, column: -1})
+export const [posLastPiece, setPosLastPiece] = createSignal<PiecePosType>({
+  row: -1,
+  column: -1,
+});
 
 export const [winningPieces, setWinningPieces] =
   createSignal<WinningPiecesType>([]);
@@ -45,20 +64,25 @@ export function updateBoard(row: number, column: number) {
   });
 }
 
-/** Compare le plateau avant et après qu'un joueur est placé sa pièce pour 
+/** Compare le plateau avant et après qu'un joueur est placé sa pièce pour
  * récupèrer la position de celle-ci. */
-export function compareBoards(oldBoard: boardStateDictType, 
-                              newBoard: boardStateDictType) {
-  for(let i = 0; i < rows.length; i++) {
-    for(let j = 0; j < columns.length; j++) {
-      if(oldBoard[i][j] !== newBoard[i][j]) {
-        return {row: i, column: j};
+export function compareBoards(
+  oldBoard: boardStateDictType,
+  newBoard: boardStateDictType
+) {
+  for (let i = 0; i < rows.length; i++) {
+    for (let j = 0; j < columns.length; j++) {
+      if (oldBoard[i][j] !== newBoard[i][j]) {
+        return { row: i, column: j };
       }
     }
   }
 }
 
 export default function () {
+  if (window.innerWidth < 640) {
+    setDimBoard({ r: 20, cy: 25, cx: 25, h: 50, w: 50 });
+  }
   return (
     <div class="flex justify-center mt-5">
       <div class="grid grid-cols-7 bg-blue-800 border-4 border-r-black border-l-black border-b-black border-t-blue-900">

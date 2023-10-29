@@ -1,5 +1,10 @@
 import { PieceEnum, turn } from "./gameContextRefactored";
-import { PiecePosType, boardState, setBoardState } from "./boardRefactored";
+import {
+  PiecePosType,
+  boardState,
+  dimBoard,
+  setBoardState,
+} from "./boardRefactored";
 import { bot } from "./iaGame";
 
 import { PageEnum, actualPage } from "../App";
@@ -63,8 +68,8 @@ export default function (props: PiecePosType) {
 
   return (
     <svg
-      height="100"
-      width="100"
+      height={dimBoard().h}
+      width={dimBoard().w}
       onClick={() => {
         switch (actualPage()) {
           case PageEnum.local:
@@ -78,9 +83,9 @@ export default function (props: PiecePosType) {
     >
       <circle
         class={isBlinking() ? "blink" : ""}
-        cx="50"
-        cy="50"
-        r="40"
+        cx={dimBoard().cx}
+        cy={dimBoard().cy}
+        r={dimBoard().r}
         stroke="black"
         stroke-width="1"
         fill={fillColor()}

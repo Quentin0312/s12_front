@@ -8,9 +8,27 @@ import { DifficultyLevelEnum, aiDifficultyLevel } from "./menu";
 
 export type PiecePosType = { row: number; column: number };
 
+type DimBoard = {
+  r: number;
+  cy: number;
+  cx: number;
+  h: number;
+  w: number;
+};
+export const [dimBoard, setDimBoard] = createSignal<DimBoard>({
+  r: 40,
+  cy: 50,
+  cx: 50,
+  h: 100,
+  w: 100,
+});
+
 export const [boardState, setBoardState] = createSignal<Board>(new Board());
 
 export default function () {
+  if (window.innerWidth < 640) {
+    setDimBoard({ r: 20, cy: 25, cx: 25, h: 50, w: 50 });
+  }
   onCleanup(() => setBoardState(new Board()));
 
   function levelToDisplay() {
