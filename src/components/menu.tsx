@@ -79,7 +79,7 @@ export default function () {
             onClick={() => setShowContentLigne(!showContentLigne())}
           />
           <Show when={showContentLigne()}>
-            <div class="card card-compact w-64 p-2 shadow bg-slate-800 text-primary-content">
+            <div class="card card-compact m-1 w-64 p-2 shadow bg-slate-800 text-primary-content">
               <div class="card-body">
                 <SubMenuButton
                   title={randomOpponent[gameLanguage()]}
@@ -141,7 +141,7 @@ export default function () {
             onClick={() => setShowContentIA(!showContentIA())}
           />
           <Show when={showContentIA()}>
-            <div class="card card-compact w-64 p-2 shadow bg-slate-800 text-primary-content">
+            <div class="card card-compact m-1 w-64 p-2 shadow bg-slate-800 text-primary-content">
               <div class="card-body">
                 <SubMenuButton
                   title={easy[gameLanguage()]}
