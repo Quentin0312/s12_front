@@ -125,7 +125,7 @@ export default function () {
                     type="text"
                     placeholder="Code"
                     class="input input-bordered input-secondary w-2/3 
-                        text-white"
+                        text-white !border-red-600 !outline-red-600"
                     maxlength={lengthCode}
                     onInput={(e) => setInputValue(e.target.value)}
                   />
