@@ -8,6 +8,7 @@ import {
   gameModeLocal,
   gameModeOnline,
   hard,
+  joinPrivateGame,
   medium,
   privateGame,
   randomOpponent,
@@ -66,7 +67,6 @@ export default function () {
       >
         {/* ====================== Local =========================== */}
         <div>
-          {/* <button class="btn btn-neutral m-1 w-64"> Partie local </button> */}
           <MenuButton
             title={gameModeLocal[gameLanguage()]}
             onClick={() => setActualPage(PageEnum.local)}
@@ -118,7 +118,7 @@ export default function () {
                     });
                   }}
                 >
-                  Rejoindre
+                  {joinPrivateGame[gameLanguage()]}
                 </button>
                 <div class="flex justify-center">
                   <input
