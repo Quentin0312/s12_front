@@ -79,7 +79,7 @@ export default function () {
             onClick={() => setShowContentLigne(!showContentLigne())}
           />
           <Show when={showContentLigne()}>
-            <div class="card card-compact w-64 p-2 shadow bg-primary text-primary-content">
+            <div class="card card-compact w-64 p-2 shadow bg-slate-800 text-primary-content">
               <div class="card-body">
                 <SubMenuButton
                   title={randomOpponent[gameLanguage()]}
@@ -141,7 +141,7 @@ export default function () {
             onClick={() => setShowContentIA(!showContentIA())}
           />
           <Show when={showContentIA()}>
-            <div class="card card-compact w-64 p-2 shadow bg-primary text-primary-content">
+            <div class="card card-compact w-64 p-2 shadow bg-slate-800 text-primary-content">
               <div class="card-body">
                 <SubMenuButton
                   title={easy[gameLanguage()]}
@@ -177,39 +177,5 @@ export default function () {
         </div>
       </div>
     </>
-    // <div class="grid grid-cols-3 justify-center mt-10 h-40">
-    //   <MenuButton
-    //     title={gameModeLocal[gameLanguage]}
-    //     onClick={() => setActualPage(PageEnum.local)}
-    //   />
-    //   <MenuButton
-    //     title={gameModeOnline[gameLanguage]}
-    //     onClick={() => setActualPage(PageEnum.online)}
-    //   />
-    //   <div>
-    //     <label for="difficulty-level-select">
-    //       {chooseDifficulty[gameLanguage]}
-    //     </label>
-
-    //     <select
-    //       value={aiDifficultyLevel()}
-    //       onChange={(e) => setAiDifficultyLevel(Number(e.target.value))}
-    //       id="difficulty-level-select"
-    //     >
-    //       <option value={DifficultyLevelEnum.easy}>{easy[gameLanguage]}</option>
-    //       <option value={DifficultyLevelEnum.medium}>
-    //         {medium[gameLanguage]}
-    //       </option>
-    //       <option value={DifficultyLevelEnum.hard}>{hard[gameLanguage]}</option>
-    //       <option value={DifficultyLevelEnum.veryHard}>
-    //         {veryHard[gameLanguage]}
-    //       </option>
-    //     </select>
-    //     <MenuButton
-    //       title={gameModeIA[gameLanguage]}
-    //       onClick={() => setActualPage(PageEnum.ia)}
-    //     />
-    //   </div>
-    // </div>
   );
 }
