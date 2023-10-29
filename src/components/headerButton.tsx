@@ -20,7 +20,7 @@ export default function () {
   return (
     <Show when={actualPage() != PageEnum.menu}>
       <div
-        class="absolute left-3 top-1/2 ml-2 cursor-pointer select-none"
+        class="absolute left-3 top-3/4 md:top-1/2 ml-2 cursor-pointer select-none"
         onClick={onClick}
       >
         {backToModeSelection[gameLanguage()]}
