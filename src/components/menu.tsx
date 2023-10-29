@@ -94,11 +94,11 @@ export default function () {
                   }}
                 />
                 <button
-                  class={`btn btn-secondary 
+                  class={`btn bg-slate-700 
                               ${
                                 inputValue().length === lengthCode
                                   ? ""
-                                  : "bg-gray-400 cursor-not-allowed"
+                                  : "bg-slate-700 cursor-not-allowed"
                               }`}
                   disabled={inputValue().length !== lengthCode}
                   onClick={() => {
@@ -125,7 +125,7 @@ export default function () {
                     type="text"
                     placeholder="Code"
                     class="input input-bordered input-secondary w-2/3 
-                        text-black"
+                        text-white"
                     maxlength={lengthCode}
                     onInput={(e) => setInputValue(e.target.value)}
                   />
