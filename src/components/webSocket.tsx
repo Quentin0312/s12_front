@@ -49,7 +49,6 @@ export default function (props: { socket: Socket }) {
     isPrivate: privateGameMode(),
     code: privateGameCode(),
   };
-  console.log("data", data);
   props.socket.emit("game is private", data);
   // -------------PLAYING-----------------
   props.socket.on(
