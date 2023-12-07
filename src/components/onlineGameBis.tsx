@@ -28,11 +28,7 @@ export const [timerYellow, setTimerYellow] = createSignal("0:00");
 export default function () {
   setGameStep(GameStepEnum.waiting);
   // TODO: Put url in .env
-  const socket = io(
-    import.meta.env.DEV
-      ? "http://localhost:8000"
-      : "https://s12-back-bf7d3c384d86.herokuapp.com/"
-  );
+  const socket = io("backend.puissance4.sc4nuxz4136.universe.wf");
   // TODO: if socket.active est false donc GamestepEnum.bug à mettre en place
   // ! et ses conséquences et actions
 
